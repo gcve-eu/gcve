@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "gcve"
-version = "0.2.0"
+version = "0.3.0"
 description = "Global CVE Allocation System"
 authors = [
     {name = "Alexandre Dulaunoy",email = "alexandre.dulaunoy@circl.lu"},
