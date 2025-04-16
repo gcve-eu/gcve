@@ -8,6 +8,21 @@ This format is already used in [Vulnerability-Lookup](https://github.com/vulnera
 See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-96d0-e3e484af6113).
 
 
+## Example of usage
+
+Generating new GCVE-1 entries (CIRCL namespace) by preventing collision with official CVE (GCVE-0):
+
+```python
+from gcve import gcve_generator, get_gna_id_by_short_name, to_gcve_id
+
+if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", GCVE_eu):
+    existing_gcves = {to_gcve_id(cve) for cve in vulnerabilitylookup.get_all_ids()}
+    generator = gcve_generator(existing_gcves, CIRCL_GNA_ID)
+    for _ in range(5):
+        print(next(generator))
+```
+
+
 ## Contact
 
 https://www.circl.lu
