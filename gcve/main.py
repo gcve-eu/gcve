@@ -1,41 +1,15 @@
 import re
 from datetime import datetime, timezone
-from typing import Generator, List, Optional, Set, Tuple, TypedDict
+from typing import Generator, List, Optional, Set, Tuple
+
+from gcve.gna import GNAEntry
+from gcve.utils import download_gcve_json_if_changed, load_gcve_json
 
 # from vulnerabilitylookup.vulnerabilitylookup import VulnerabilityLookup
 
 # vulnerabilitylookup: VulnerabilityLookup = VulnerabilityLookup()  # type: ignore[unused-ignore]
 known_cves: Set[str] = set()
 
-
-class GNAEntry(TypedDict, total=False):
-    """Define a GNA entry:
-    https://gcve.eu/about/#eligibility-and-process-to-obtain-a-gna-id"""
-
-    id: int
-    short_name: str
-    full_name: str
-    cpe_vendor_name: str
-    gcve_url: str
-    gcve_api: str
-    gcve_dump: str
-    gcve_allocation: str
-
-
-# JSON Directory File Available at GCVE.eu
-GCVE_eu: List[GNAEntry] = [
-    {"id": 0, "short_name": "CVE", "full_name": "CVE Program"},
-    {
-        "id": 1,
-        "short_name": "CIRCL",
-        "cpe_vendor_name": "circl",
-        "full_name": "Computer Incident Response Center Luxembourg",
-        "gcve_url": "https://vulnerability.circl.lu",
-        "gcve_api": "https://vulnerability.circl.lu/api/",
-        "gcve_dump": "https://vulnerability.circl.lu/dumps/",
-        "gcve_allocation": "https://vulnerability.circl.lu",
-    },
-]
 
 # https://gcve.eu/about/#gcve-identifier-format
 GCVE_REGEX = re.compile(r"GCVE-(\d+)-(\d{4})-(\d{4,})")
@@ -100,9 +74,13 @@ def gcve_generator(existing_gcves: Set[str], gna_id: int) -> Generator[str, None
 if __name__ == "__main__":
     # Point of entry in execution mode
 
+    # Retrieve the JSON Directory file available at GCVE.eu
+    updated: bool = download_gcve_json_if_changed()
+    gcve_data: List[GNAEntry] = load_gcve_json()
+
     # --- Examples of usage ---
     # Validating a GCVE id
-    print("Validating a GCVE ID:")
+    print("\nValidating a GCVE ID:")
     if res := validate_gcve_id("GCVE-1-2025-00001"):
         print(f"GNA ID: {res[0]}\nYear: {res[1]}\nUnique ID: {res[2]}")
 
@@ -113,7 +91,7 @@ if __name__ == "__main__":
     # Generate new GCVE-1 entries
     print("\n\nGenerate GCVE-1 entries:")
     # we suppose that all known CVEs are in kvrocks:
-    if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", GCVE_eu):
+    if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", gcve_data):
         # existing_gcves = {to_gcve_id(cve) for cve in vulnerabilitylookup.get_all_ids()}
         existing_gcves = {to_gcve_id(cve) for cve in known_cves}
         generator = gcve_generator(existing_gcves, CIRCL_GNA_ID)

@@ -21,6 +21,7 @@ dynamic = ["classifiers"]
 
 requires-python = ">=3.10"
 dependencies = [
+    "requests (>=2.32.3,<3.0.0)"
 ]
 
 
@@ -47,6 +48,11 @@ classifiers = [
 ]
 
 
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.2.0"
+mypy = "^1.15.0"
+flake8 = "^7.2.0"
+
 [tool.mypy]
 python_version = "3.12"
 check_untyped_defs = true
@@ -72,3 +78,7 @@ testpaths = [
 env = [
     "TESTING=gh_action",
 ]
+
+
+[tool.isort]
+profile = "black"

@@ -10,18 +10,38 @@ See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-
 
 ## Example of usage
 
-Generating new GCVE-1 entries (CIRCL namespace) by preventing collision with official CVE (GCVE-0):
+Generating new GCVE-1 entries (CIRCL namespace) while preventing collisions with official CVE entries (GCVE-0):
 
 ```python
 from gcve import gcve_generator, get_gna_id_by_short_name, to_gcve_id
+from gcve.gna import GNAEntry
+from gcve.utils import download_gcve_json_if_changed, load_gcve_json
 
-if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", GCVE_eu):
+# Retrieve the JSON Directory file available at GCVE.eu if it has changed
+updated: bool = download_gcve_json_if_changed()
+# Initializes the GNA entries
+gcve_data: List[GNAEntry] = load_gcve_json()
+
+# If "CIRCL" found in the registry
+if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", gcve_data):
+    # Existing GCVE-O
     existing_gcves = {to_gcve_id(cve) for cve in vulnerabilitylookup.get_all_ids()}
+
     generator = gcve_generator(existing_gcves, CIRCL_GNA_ID)
     for _ in range(5):
         print(next(generator))
 ```
 
+
+### Upgrading GCVE-1 to GCVE-0
+
+If a GCVE-1 ID like GCVE-1-2025-0005 later matches a new official CVE like CVE-2025-0005, we just remap it using:
+
+```python
+from gcve import to_gcve_id
+if "CVE-2025-0005" in known_cves:
+    upgraded = to_gcve_id("CVE-2025-0005")
+```
 
 ## Contact
 
@@ -30,5 +50,5 @@ https://www.circl.lu
 
 ## License
 
-GCVE is licensed under
+[GCVE](https://github.com/gcve-eu/gcve) is licensed under
 [GNU General Public License version 3](https://www.gnu.org/licenses/gpl-3.0.html)
