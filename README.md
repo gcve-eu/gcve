@@ -10,7 +10,7 @@ See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-
 
 ## Example of usage
 
-Generating new GCVE-1 entries (CIRCL namespace) while preventing collisions with official CVE entries (GCVE-0):
+Generating new GCVE-1 entries (CIRCL namespace):
 
 ```python
 from gcve import gcve_generator, get_gna_id_by_short_name, to_gcve_id
@@ -32,16 +32,6 @@ if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", gcve_data):
         print(next(generator))
 ```
 
-
-### Upgrading GCVE-1 to GCVE-0
-
-If a GCVE-1 ID like GCVE-1-2025-0005 later matches a new official CVE like CVE-2025-0005, we just remap it using:
-
-```python
-from gcve import to_gcve_id
-if "CVE-2025-0005" in known_cves:
-    upgraded = to_gcve_id("CVE-2025-0005")
-```
 
 ## Contact
 
