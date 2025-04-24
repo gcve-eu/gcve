@@ -33,5 +33,4 @@ eproject.cfg
 # Log files:
 *.log
 
-gcve.json
-gcve_headers.cache
+data/

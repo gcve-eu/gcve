@@ -3,7 +3,13 @@ from datetime import datetime, timezone
 from typing import Generator, List, Optional, Set, Tuple
 
 from gcve.gna import GNAEntry
-from gcve.utils import download_gcve_json_if_changed, load_gcve_json
+from gcve.utils import (
+    download_directory_signature_if_changed,
+    download_gcve_json_if_changed,
+    download_public_key_if_changed,
+    load_gcve_json,
+    verify_gcve_integrity,
+)
 
 # from vulnerabilitylookup.vulnerabilitylookup import VulnerabilityLookup
 
@@ -74,10 +80,23 @@ def gcve_generator(existing_gcves: Set[str], gna_id: int) -> Generator[str, None
 if __name__ == "__main__":
     # Point of entry in execution mode
 
+    # Retrieve the public key if it has changed
+    download_public_key_if_changed()
+
+    # Retrieve the signature of the directory if it as changed
+    download_directory_signature_if_changed()
+
     # Retrieve the JSON Directory file available at GCVE.eu
     updated: bool = download_gcve_json_if_changed()
-    gcve_data: List[GNAEntry] = load_gcve_json()
 
+    # Verify the integrity of the directory
+    if integrity := verify_gcve_integrity():
+        # Load the GCVE directory
+        gcve_data: List[GNAEntry] = load_gcve_json()
+    else:
+        exit(1)
+
+    exit(0)
     # --- Examples of usage ---
     # Validating a GCVE id
     print("\nValidating a GCVE ID:")
