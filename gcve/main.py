@@ -80,6 +80,8 @@ def gcve_generator(existing_gcves: Set[str], gna_id: int) -> Generator[str, None
 if __name__ == "__main__":
     # Point of entry in execution mode
 
+    # --- Examples of usage ---
+
     # Retrieve the public key if it has changed
     download_public_key_if_changed()
 
@@ -96,8 +98,6 @@ if __name__ == "__main__":
     else:
         exit(1)
 
-    exit(0)
-    # --- Examples of usage ---
     # Validating a GCVE id
     print("\nValidating a GCVE ID:")
     if res := validate_gcve_id("GCVE-1-2025-00001"):
