@@ -10,7 +10,20 @@ See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-
 
 ## Example of usage
 
-Generating new GCVE-1 entries (CIRCL namespace):
+### Verifying the integrity of your local GNA directory copy
+
+```python
+download_public_key_if_changed()
+download_directory_signature_if_changed()
+download_gcve_json_if_changed()
+
+# Verify the integrity of the directory
+if integrity := verify_gcve_integrity():
+    # Load the GCVE directory
+    gcve_data: List[GNAEntry] = load_gcve_json()
+```
+
+### Generating new GCVE-1 entries (CIRCL namespace)
 
 ```python
 from gcve import gcve_generator, get_gna_id_by_short_name, to_gcve_id
@@ -31,6 +44,7 @@ if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", gcve_data):
     for _ in range(5):
         print(next(generator))
 ```
+
 
 
 ## Contact

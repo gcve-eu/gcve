@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # Retrieve the public key if it has changed
     download_public_key_if_changed()
 
-    # Retrieve the signature of the directory if it as changed
+    # Retrieve the signature of the directory if it has changed
     download_directory_signature_if_changed()
 
     # Retrieve the JSON Directory file available at GCVE.eu
