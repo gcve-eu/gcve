@@ -8,7 +8,7 @@ This format is already used in [Vulnerability-Lookup](https://github.com/vulnera
 See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-96d0-e3e484af6113).
 
 
-## Example of usage
+## Examples of usage
 
 ### Verifying the integrity of your local GNA directory copy
 
