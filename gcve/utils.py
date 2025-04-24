@@ -85,9 +85,9 @@ def download_directory_signature_if_changed() -> bool:
 
 
 def verify_gcve_integrity(
-    json_path: Path = "data/gcve.json",
-    sig_path: Path = "data/gcve.json.sigsha512",
-    pubkey_path: Path = "data/public.pem",
+    json_path: Path = Path("data/gcve.json"),
+    sig_path: Path = Path("data/gcve.json.sigsha512"),
+    pubkey_path: Path = Path("data/public.pem"),
 ) -> bool:
     """
     Verifies the integrity of a JSON file using a SHA-512 signature and a public key.
