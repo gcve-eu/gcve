@@ -15,13 +15,31 @@ See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-
 First install the gcve client:
 
 ```bash
+python -m pip install --user pipx
+python -m pipx ensurepath
+
 pipx install gcve
+  installed package gcve 0.4.3, installed using Python 3.13.0
+  These apps are now globally available
+    - gcve
+done! ✨ 🌟 ✨
 ```
 
 ### Pulling the registry locally
 
 ```bash
-$ gcve --help
+gcve registry --pull
+Pulling from registry...
+Downloaded updated https://gcve.eu/dist/key/public.pem to data/public.pem
+Downloaded updated https://gcve.eu/dist/gcve.json.sigsha512 to data/gcve.json.sigsha512
+Downloaded updated https://gcve.eu/dist/gcve.json to data/gcve.json
+Integrity check passed successfully.
+```
+
+Listing available commands:
+
+```bash
+gcve --help
 usage: gcve [-h] {registry} ...
 
 A Python client for the Global CVE Allocation System.
@@ -32,14 +50,6 @@ positional arguments:
 
 options:
   -h, --help  show this help message and exit
-
-
-$ gcve registry --pull
-Pulling from registry...
-Downloaded updated https://gcve.eu/dist/key/public.pem to data/public.pem
-Downloaded updated https://gcve.eu/dist/gcve.json.sigsha512 to data/gcve.json.sigsha512
-Downloaded updated https://gcve.eu/dist/gcve.json to data/gcve.json
-Integrity check passed successfully.
 ```
 
 
@@ -91,3 +101,7 @@ https://www.circl.lu
 
 [GCVE](https://github.com/gcve-eu/gcve) is licensed under
 [GNU General Public License version 3](https://www.gnu.org/licenses/gpl-3.0.html)
+
+
+Copyright (c) 2025 Computer Incident Response Center Luxembourg (CIRCL)
+Copyright (c) 2025 Cédric Bonhomme - https://github.com/cedricbonhomme
