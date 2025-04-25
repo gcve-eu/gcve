@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "gcve"
-version = "0.3.0"
+version = "0.4.0"
 description = "Global CVE Allocation System"
 authors = [
     {name = "Alexandre Dulaunoy",email = "alexandre.dulaunoy@circl.lu"},
@@ -32,6 +32,10 @@ Repository = "https://github.com/gcve-eu/gcve"
 Documentation = "https://gcve.eu"
 
 
+[project.scripts]
+gcve = "bin.cli:main"
+
+
 [tool.poetry]
 requires-poetry = ">=2.0"
 classifiers = [
@@ -46,6 +50,12 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"
+]
+include = [
+    "README.md",
+    "COPYING",
+    "CHANGELOG.md",
+    "bin/*"
 ]
 
 

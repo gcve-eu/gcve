@@ -10,7 +10,42 @@ See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-
 
 ## Examples of usage
 
-### Verifying the integrity of your local GNA directory copy
+### As a command line tool
+
+First install the gcve client:
+
+```bash
+pipx install gcve
+```
+
+### Pulling the registry locally
+
+```bash
+$ gcve --help
+usage: gcve [-h] {registry} ...
+
+A Python client for the Global CVE Allocation System.
+
+positional arguments:
+  {registry}
+    registry  Registry operations
+
+options:
+  -h, --help  show this help message and exit
+
+
+$ gcve registry --pull
+Pulling from registry...
+Downloaded updated https://gcve.eu/dist/key/public.pem to data/public.pem
+Downloaded updated https://gcve.eu/dist/gcve.json.sigsha512 to data/gcve.json.sigsha512
+Downloaded updated https://gcve.eu/dist/gcve.json to data/gcve.json
+Integrity check passed successfully.
+```
+
+
+### As a library
+
+#### Verifying the integrity of your local GNA directory copy
 
 ```python
 download_public_key_if_changed()
@@ -23,7 +58,7 @@ if integrity := verify_gcve_integrity():
     gcve_data: List[GNAEntry] = load_gcve_json()
 ```
 
-### Generating new GCVE-1 entries (CIRCL namespace)
+#### Generating new GCVE-1 entries (CIRCL namespace)
 
 ```python
 from gcve import gcve_generator, get_gna_id_by_short_name, to_gcve_id

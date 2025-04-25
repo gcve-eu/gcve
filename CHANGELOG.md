@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 0.4.0 (2025-04-25)
+
+- Added a function to pull the SHA 512 signature from gcve.eu.
+- Added a function to pull the GCVE public key from gcve.eu.
+- Added a function to check the integrity of the local copy of the registry.
+- Added a command line tool in order to pull the registry.
+
 ## Release 0.3.0 (2025-04-16)
 
 - Retrieve the JSON Directory file available at GCVE.eu if it has changed.
