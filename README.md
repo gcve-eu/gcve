@@ -12,6 +12,12 @@ See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-
 
 ### As a command line tool
 
+First install the gcve client:
+
+```bash
+pipx install gcve
+```
+
 ### Pulling the registry locally
 
 ```bash

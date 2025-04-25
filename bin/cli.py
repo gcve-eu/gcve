@@ -10,7 +10,7 @@ from gcve.utils import (
 )
 
 
-def handle_registry(args):
+def handle_registry(args) -> None:
     if args.pull:
         print("Pulling from registry...")
         download_public_key_if_changed()
@@ -22,7 +22,7 @@ def handle_registry(args):
         print("Registry command called without --pull")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         prog="gcve", description="A Python client for the Global CVE Allocation System."
     )
