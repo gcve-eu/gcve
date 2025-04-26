@@ -1,9 +1,15 @@
 # Changelog
 
+## Release 0.5.0 (2025-04-27)
+
+- Added a function and a command to search the registry.
+
+
 ## Release 0.4.4 (2025-04-27)
 
-- Improve structure of the project.
+- Improved the structure of the project.
 - Added new ``version`` argument to the command line.
+
 
 ## Release 0.4.0 (2025-04-25)
 
@@ -11,6 +17,7 @@
 - Added a function to pull the GCVE public key from gcve.eu.
 - Added a function to check the integrity of the local copy of the registry.
 - Added a command line tool in order to pull the registry.
+
 
 ## Release 0.3.0 (2025-04-16)
 

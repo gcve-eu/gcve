@@ -28,7 +28,7 @@ done! ✨ 🌟 ✨
 ### Pulling the registry locally
 
 ```bash
-gcve registry --pull
+$ gcve registry --pull
 Pulling from registry...
 Downloaded updated https://gcve.eu/dist/key/public.pem to data/public.pem
 Downloaded updated https://gcve.eu/dist/gcve.json.sigsha512 to data/gcve.json.sigsha512
@@ -36,10 +36,22 @@ Downloaded updated https://gcve.eu/dist/gcve.json to data/gcve.json
 Integrity check passed successfully.
 ```
 
+### Searching the registry
+
+```bash
+$ gcve registry --find DFN-CERT
+{
+  "id": 680,
+  "short_name": "DFN-CERT",
+  "full_name": "DFN-CERT Services GmbH",
+  "gcve_url": "https://adv-archiv.dfn-cert.de/"
+}
+```
+
 Listing available commands:
 
 ```bash
-gcve --help
+$ gcve --help
 usage: gcve [-h] {registry} ...
 
 A Python client for the Global CVE Allocation System.

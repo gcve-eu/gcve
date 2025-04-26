@@ -15,11 +15,18 @@ class GNAEntry(TypedDict, total=False):
     gcve_allocation: str
 
 
+def get_gna_by_short_name(short_name: str, gna_list: List[GNAEntry]) -> GNAEntry | None:
+    """Return the GNA for a given short name, or None if not found."""
+    for entry in gna_list:
+        if entry.get("short_name") == short_name:
+            return entry
+    return None
+
+
 def get_gna_id_by_short_name(
     short_name: str, gna_list: List[GNAEntry]
 ) -> Optional[int]:
     """Return the GNA ID for a given short name, or None if not found."""
-    for entry in gna_list:
-        if entry.get("short_name") == short_name:
-            return entry.get("id")
+    if entry := get_gna_by_short_name(short_name, gna_list):
+        return entry.get("id")
     return None

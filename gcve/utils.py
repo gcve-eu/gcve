@@ -2,14 +2,17 @@ import base64
 import json
 import os
 from pathlib import Path
+from typing import List
 
 import requests
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
+from gcve.gna import GNAEntry
 
-def load_gcve_json(file_path: str = "data/gcve.json") -> str:
+
+def load_gcve_json(file_path: str = "data/gcve.json") -> List[GNAEntry]:
     """Load the downloaded gcve.json into a Python object."""
     with open(file_path, encoding="utf-8") as f:
         return json.load(f)

@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 
 import argparse
-from typing import Any
+import json
+from typing import Any, List
 
 from gcve import __version__
+from gcve.gna import GNAEntry, get_gna_by_short_name
 from gcve.utils import (
     download_directory_signature_if_changed,
     download_gcve_json_if_changed,
     download_public_key_if_changed,
+    load_gcve_json,
     verify_gcve_integrity,
 )
 
@@ -20,6 +23,11 @@ def handle_registry(args: Any) -> None:
         download_gcve_json_if_changed()
         if verify_gcve_integrity():
             print("Integrity check passed successfully.")
+    elif args.find:
+        gcve_data: List[GNAEntry] = load_gcve_json()
+        result = get_gna_by_short_name(args.find, gcve_data)
+        if result:
+            print(json.dumps(result, indent=2))
     else:
         print("Registry command called without --pull")
 
@@ -38,6 +46,9 @@ def main() -> None:
     registry_parser = subparsers.add_parser("registry", help="Registry operations")
     registry_parser.add_argument(
         "--pull", action="store_true", help="Pull from registry"
+    )
+    registry_parser.add_argument(
+        "--find", dest="find", help="Find in the registry by shortname"
     )
     registry_parser.set_defaults(func=handle_registry)
 
