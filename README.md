@@ -110,7 +110,7 @@ if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", gcve_data):
 ## License
 
 [GCVE](https://github.com/gcve-eu/gcve) is licensed under
-[GNU General Public License version 3](https://www.gnu.org/licenses/gpl-3.0.html)
+[GNU General Public License version 3](https://www.gnu.org/licenses/gpl-3.0.html).
 
 
 - Copyright (c) 2025 Computer Incident Response Center Luxembourg (CIRCL)
