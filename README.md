@@ -1,11 +1,12 @@
-# GCVE: Global CVE Allocation System
+# A Python client for the Global CVE Allocation System
 
 The [Global CVE (GCVE) allocation system](https://gcve.eu) is a new, decentralized approach to vulnerability identification and numbering, designed to improve flexibility, scalability, and autonomy for participating entities.
 
-While remaining compatible with the traditional CVE system, GCVE introduces GCVE Numbering Authorities (GNAs). GNAs are independent entities that can allocate identifiers without relying on a centralised block distribution system or rigid policy enforcement.
-
-This format is already used in [Vulnerability-Lookup](https://github.com/vulnerability-lookup/vulnerability-lookup).  
-See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-96d0-e3e484af6113).
+This client can be integrated into software such as
+[Vulnerability-Lookup](https://github.com/vulnerability-lookup/vulnerability-lookup)
+to provide core functionalities by adhering to the GCVE
+[Best Current Practices](https://gcve.eu/bcp/).  
+It can also be used as a standalone command-line tool.
 
 
 ## Examples of usage
@@ -15,11 +16,11 @@ See an example [here](https://vulnerability.circl.lu/product/651684fd-f2b4-45ac-
 First install the gcve client:
 
 ```bash
-python -m pip install --user pipx
-python -m pipx ensurepath
+$ python -m pip install --user pipx
+$ python -m pipx ensurepath
 
-pipx install gcve
-  installed package gcve 0.4.3, installed using Python 3.13.0
+$ pipx install gcve
+  installed package gcve 0.5.0, installed using Python 3.13.0
   These apps are now globally available
     - gcve
 done! ✨ 🌟 ✨
@@ -46,6 +47,9 @@ $ gcve registry --find DFN-CERT
   "full_name": "DFN-CERT Services GmbH",
   "gcve_url": "https://adv-archiv.dfn-cert.de/"
 }
+
+$ gcve registry --find DFN-CERT | jq .id
+680
 ```
 
 Listing available commands:
@@ -103,12 +107,6 @@ if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", gcve_data):
 ```
 
 
-
-## Contact
-
-https://www.circl.lu
-
-
 ## License
 
 [GCVE](https://github.com/gcve-eu/gcve) is licensed under
@@ -117,3 +115,15 @@ https://www.circl.lu
 
 Copyright (c) 2025 Computer Incident Response Center Luxembourg (CIRCL)
 Copyright (c) 2025 Cédric Bonhomme - https://github.com/cedricbonhomme
+
+
+## Contact
+
+~~~
+Att: GCVE.EU
+CIRCL - Computer Incident Response Center Luxembourg
+c/o "Luxembourg House of Cybersecurity" g.i.e.
+122, rue Adolphe Fischer
+L-1521 Luxembourg
+Grand-Duchy of Luxembourg
+~~~
