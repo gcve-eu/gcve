@@ -2,7 +2,7 @@ import re
 from datetime import datetime, timezone
 from typing import Generator, List, Optional, Set, Tuple
 
-from gcve.gna import GNAEntry
+from gcve.gna import GNAEntry, get_gna_id_by_short_name
 from gcve.utils import (
     download_directory_signature_if_changed,
     download_gcve_json_if_changed,
@@ -19,16 +19,6 @@ known_cves: Set[str] = set()
 
 # https://gcve.eu/about/#gcve-identifier-format
 GCVE_REGEX = re.compile(r"GCVE-(\d+)-(\d{4})-(\d{4,})")
-
-
-def get_gna_id_by_short_name(
-    short_name: str, gna_list: List[GNAEntry]
-) -> Optional[int]:
-    """Return the GNA ID for a given short name, or None if not found."""
-    for entry in gna_list:
-        if entry.get("short_name") == short_name:
-            return entry.get("id")
-    return None
 
 
 def validate_gcve_id(gcve_id: str) -> Optional[Tuple[int, int, int]]:

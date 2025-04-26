@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import argparse
+from typing import Any
 
+from gcve import __version__
 from gcve.utils import (
     download_directory_signature_if_changed,
     download_gcve_json_if_changed,
@@ -10,7 +12,7 @@ from gcve.utils import (
 )
 
 
-def handle_registry(args) -> None:
+def handle_registry(args: Any) -> None:
     if args.pull:
         print("Pulling from registry...")
         download_public_key_if_changed()
@@ -28,6 +30,10 @@ def main() -> None:
     )
     subparsers = parser.add_subparsers(dest="command")
 
+    parser.add_argument(
+        "--version", action="store_true", help="Display the version of the client."
+    )
+
     # Subcommand: registry
     registry_parser = subparsers.add_parser("registry", help="Registry operations")
     registry_parser.add_argument(
@@ -39,5 +45,7 @@ def main() -> None:
 
     if hasattr(args, "func"):
         args.func(args)
+    elif args.version:
+        print(__version__)
     else:
         parser.print_help()

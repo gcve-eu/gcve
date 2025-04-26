@@ -9,13 +9,13 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
 
-def load_gcve_json(file_path: str = "data/gcve.json"):
+def load_gcve_json(file_path: str = "data/gcve.json") -> str:
     """Load the downloaded gcve.json into a Python object."""
     with open(file_path, encoding="utf-8") as f:
         return json.load(f)
 
 
-def load_cached_headers(headers_file: str) -> dict:
+def load_cached_headers(headers_file: str) -> dict[str, str]:
     """Load cached headers from file."""
     if not os.path.exists(headers_file):
         return {}
@@ -23,7 +23,7 @@ def load_cached_headers(headers_file: str) -> dict:
         return dict(line.strip().split(":", 1) for line in f if ":" in line)
 
 
-def save_cached_headers(headers: dict, headers_file: str) -> None:
+def save_cached_headers(headers: dict[str, str], headers_file: str) -> None:
     """Save selected headers to a cache file."""
     keys_to_store = ["ETag", "Last-Modified"]
     with open(headers_file, "w") as f:
@@ -57,7 +57,7 @@ def download_file_if_changed(url: str, destination_path: str) -> bool:
             f.write(response.content)
 
         save_cached_headers(
-            response.headers, f"{(data / destination_path)}.headers.cache"
+            dict(response.headers), f"{(data / destination_path)}.headers.cache"
         )
         print(f"Downloaded updated {url} to {(data / destination_path).as_posix()}")
         return True  # File was updated

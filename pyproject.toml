@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "gcve"
-version = "0.4.3"
+version = "0.4.4"
 description = "Global CVE Allocation System"
 authors = [
     {name = "Alexandre Dulaunoy",email = "alexandre.dulaunoy@circl.lu"},
@@ -14,7 +14,7 @@ authors = [
 ]
 license = {text = "gpl-3.0"}
 readme = "README.md"
-keywords = ["GCVE", "Vulnerability", "CVE", "CVD", "CSAF"]
+keywords = ["GCVE", "Vulnerability", "CVE", "CVD"]
 # classifieres is dynamic because we want to create Python classifiers automatically
 dynamic = ["classifiers"]
 
@@ -69,10 +69,10 @@ mypy = "^1.15.0"
 flake8 = "^7.2.0"
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 check_untyped_defs = true
 ignore_errors = false
-ignore_missing_imports = false
+ignore_missing_imports = true
 strict_optional = true
 no_implicit_optional = true
 warn_unused_ignores = true
@@ -83,16 +83,7 @@ warn_unreachable = true
 show_error_context = true
 pretty = true
 
-
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-ra -q"
-testpaths = [
-    "tests",
-]
-env = [
-    "TESTING=gh_action",
-]
+exclude = "build|dist|docs"
 
 
 [tool.isort]

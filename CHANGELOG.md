@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.4.4 (2025-04-27)
+
+- Improve structure of the project.
+- Added new ``version`` argument to the command line.
+
 ## Release 0.4.0 (2025-04-25)
 
 - Added a function to pull the SHA 512 signature from gcve.eu.
