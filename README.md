@@ -1,10 +1,12 @@
 # A Python client for the Global CVE Allocation System
 
-The [Global CVE (GCVE) allocation system](https://gcve.eu) is a new, decentralized approach to vulnerability identification and numbering, designed to improve flexibility, scalability, and autonomy for participating entities.
+The [Global CVE (GCVE) allocation system](https://gcve.eu) is a new, decentralized
+approach to vulnerability identification and numbering, designed to improve flexibility,
+scalability, and autonomy for participating entities.
 
 This client can be integrated into software such as
 [Vulnerability-Lookup](https://github.com/vulnerability-lookup/vulnerability-lookup)
-to provide core functionalities by adhering to the GCVE
+to provide core GCVE functionalities by adhering to the
 [Best Current Practices](https://gcve.eu/bcp/).  
 It can also be used as a standalone command-line tool.
 
@@ -26,7 +28,7 @@ $ pipx install gcve
 done! ✨ 🌟 ✨
 ```
 
-### Pulling the registry locally
+#### Pulling the registry locally
 
 ```bash
 $ gcve registry --pull
@@ -37,7 +39,7 @@ Downloaded updated https://gcve.eu/dist/gcve.json to data/gcve.json
 Integrity check passed successfully.
 ```
 
-### Retrieving a GNA
+#### Retrieving a GNA
 
 Note: This operation is case sensitive.
 
@@ -59,7 +61,7 @@ $ gcve registry --find CIRCL | jq .id
 1
 ```
 
-### Searching the Registry
+#### Searching the Registry
 
 Note: Search operations are case insensitive.
 
@@ -101,7 +103,9 @@ if verify_gcve_integrity():
     gcve_data: List[GNAEntry] = load_gcve_json()
 ```
 
-#### Generating new GCVE-1 entries (CIRCL namespace)
+#### Generating new GCVE entries
+
+Example with GCVE-1 entries (CIRCL namespace):
 
 ```python
 from typing import List
@@ -111,9 +115,9 @@ from gcve.gna import GNAEntry
 from gcve.utils import download_gcve_json_if_changed, load_gcve_json
 
 # Retrieve the JSON Directory file available at GCVE.eu if it has changed
-updated: bool = download_gcve_json_if_changed()
+download_gcve_json_if_changed()
 # Initializes the GNA entries
-gcve_data: List[GNAEntry] = load_gcve_json()
+gcve_data = load_gcve_json()
 
 # If "CIRCL" found in the registry
 if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", gcve_data):
