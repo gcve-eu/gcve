@@ -9,8 +9,8 @@ name = "gcve"
 version = "0.6.0"
 description = "A Python client for the Global CVE Allocation System."
 authors = [
-    {name = "Alexandre Dulaunoy",email = "alexandre.dulaunoy@circl.lu"},
-    {name = "Cédric Bonhomme",email = "cedric.bonhomme@circl.lu"}
+    {name = "Cédric Bonhomme",email = "cedric.bonhomme@circl.lu"},
+    {name = "Alexandre Dulaunoy",email = "alexandre.dulaunoy@circl.lu"}
 ]
 license = {text = "gpl-3.0"}
 readme = "README.md"

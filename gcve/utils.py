@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from typing import List
 
-import requests
+import requests  # type: ignore[import-untyped]
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.serialization import load_pem_public_key
@@ -117,7 +117,7 @@ def verify_gcve_integrity(
             data = json_file.read()
 
         # Verify the signature
-        public_key.verify(signature, data, padding.PKCS1v15(), hashes.SHA512())
+        public_key.verify(signature, data, padding.PKCS1v15(), hashes.SHA512())  # type: ignore
 
         return True
     except Exception:
