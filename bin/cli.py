@@ -5,7 +5,7 @@ import json
 from typing import Any, List
 
 from gcve import __version__
-from gcve.gna import GNAEntry, get_gna_by_short_name
+from gcve.gna import GNAEntry, find_gna_by_short_name, get_gna_by_short_name
 from gcve.utils import (
     download_directory_signature_if_changed,
     download_gcve_json_if_changed,
@@ -23,13 +23,20 @@ def handle_registry(args: Any) -> None:
         download_gcve_json_if_changed()
         if verify_gcve_integrity():
             print("Integrity check passed successfully.")
-    elif args.find:
+        return
+
+    if args.get or args.find:
         gcve_data: List[GNAEntry] = load_gcve_json()
-        result = get_gna_by_short_name(args.find, gcve_data)
-        if result:
-            print(json.dumps(result, indent=2))
-    else:
-        print("Registry command called without --pull")
+        if args.get:
+            result = get_gna_by_short_name(args.get, gcve_data)
+            if result:
+                print(json.dumps(result, indent=2))
+        elif args.find:
+            results: List[GNAEntry] = find_gna_by_short_name(args.find, gcve_data)
+            print(json.dumps(results, indent=2))
+        return
+
+    print("Registry command called without --pull")
 
 
 def main() -> None:
@@ -47,6 +54,7 @@ def main() -> None:
     registry_parser.add_argument(
         "--pull", action="store_true", help="Pull from registry"
     )
+    registry_parser.add_argument("--get", dest="get", help="Get by shortname")
     registry_parser.add_argument(
         "--find", dest="find", help="Find in the registry by shortname"
     )
