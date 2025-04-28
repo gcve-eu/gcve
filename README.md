@@ -59,8 +59,6 @@ $ gcve registry --find CIRCL | jq .id
 1
 ```
 
-This operation is case insensitive.
-
 ### Searching the Registry
 
 Note: Search operations are case insensitive.
