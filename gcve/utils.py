@@ -11,6 +11,10 @@ from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
 from gcve.gna import GNAEntry
 
+GCVE_PATH: Path = Path("data/gcve.json")
+SIG_PATH: Path = Path("data/gcve.json.sigsha512")
+PUBKEY_PATH: Path = Path("data/public.pem")
+
 
 def load_gcve_json(file_path: str = "data/gcve.json") -> List[GNAEntry]:
     """Load the downloaded gcve.json into a Python object."""
@@ -88,9 +92,9 @@ def download_directory_signature_if_changed() -> bool:
 
 
 def verify_gcve_integrity(
-    json_path: Path = Path("data/gcve.json"),
-    sig_path: Path = Path("data/gcve.json.sigsha512"),
-    pubkey_path: Path = Path("data/public.pem"),
+    json_path: Path = GCVE_PATH,
+    sig_path: Path = SIG_PATH,
+    pubkey_path: Path = PUBKEY_PATH,
 ) -> bool:
     """
     Verifies the integrity of a JSON file using a SHA-512 signature and a public key.
