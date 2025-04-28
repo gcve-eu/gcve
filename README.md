@@ -57,7 +57,7 @@ $ gcve registry --get CIRCL
   "gcve_sync_api": "https://vulnerability.circl.lu/"
 }
 
-$ gcve registry --find CIRCL | jq .id
+$ gcve registry --get CIRCL | jq .id
 1
 ```
 
