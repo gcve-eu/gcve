@@ -42,16 +42,21 @@ Integrity check passed successfully.
 Note: This operation is case sensitive.
 
 ```bash
-$ gcve registry --get DFN-CERT
+$ gcve registry --get CIRCL
 {
-  "id": 680,
-  "short_name": "DFN-CERT",
-  "full_name": "DFN-CERT Services GmbH",
-  "gcve_url": "https://adv-archiv.dfn-cert.de/"
+  "id": 1,
+  "short_name": "CIRCL",
+  "cpe_vendor_name": "circl",
+  "full_name": "Computer Incident Response Center Luxembourg",
+  "gcve_url": "https://vulnerability.circl.lu/",
+  "gcve_api": "https://vulnerability.circl.lu/api/",
+  "gcve_dump": "https://vulnerability.circl.lu/dumps/",
+  "gcve_allocation": "https://vulnerability.circl.lu/",
+  "gcve_sync_api": "https://vulnerability.circl.lu/"
 }
 
-$ gcve registry --find DFN-CERT | jq .id
-680
+$ gcve registry --find CIRCL | jq .id
+1
 ```
 
 This operation is case insensitive.
@@ -78,12 +83,22 @@ $ gcve registry --find cert
 #### Verifying the integrity of your local GNA directory copy
 
 ```python
+from typing import List
+from gcve.gna import GNAEntry
+from gcve.utils import (
+    download_public_key_if_changed
+    download_directory_signature_if_changed,
+    download_gcve_json_if_changed,
+    verify_gcve_integrity
+    load_gcve_json,
+)
+
 download_public_key_if_changed()
 download_directory_signature_if_changed()
 download_gcve_json_if_changed()
 
 # Verify the integrity of the directory
-if integrity := verify_gcve_integrity():
+if verify_gcve_integrity():
     # Load the GCVE directory
     gcve_data: List[GNAEntry] = load_gcve_json()
 ```
@@ -91,6 +106,8 @@ if integrity := verify_gcve_integrity():
 #### Generating new GCVE-1 entries (CIRCL namespace)
 
 ```python
+from typing import List
+from gcve.gna import GNAEntry
 from gcve import gcve_generator, get_gna_id_by_short_name, to_gcve_id
 from gcve.gna import GNAEntry
 from gcve.utils import download_gcve_json_if_changed, load_gcve_json
