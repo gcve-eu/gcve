@@ -16,6 +16,15 @@ class GNAEntry(TypedDict, total=False):
     gcve_sync_api: str
 
 
+def find_gna_by_short_name(short_name: str, gna_list: List[GNAEntry]) -> List[GNAEntry]:
+    """Return the GNAs corresponding to the given short name, or an empty list if nothing found."""
+    result = []
+    for entry in gna_list:
+        if short_name.lower() in entry.get("short_name", "").lower():
+            result.append(entry)
+    return result
+
+
 def get_gna_by_short_name(short_name: str, gna_list: List[GNAEntry]) -> GNAEntry | None:
     """Return the GNA for a given short name, or None if not found."""
     for entry in gna_list:
