@@ -1,12 +1,12 @@
-from typing import List, Optional, TypedDict
+from typing import List, Optional, Required, TypedDict
 
 
 class GNAEntry(TypedDict, total=False):
     """Define a GNA entry:
     https://gcve.eu/about/#eligibility-and-process-to-obtain-a-gna-id"""
 
-    id: int
-    short_name: str
+    id: Required[int]
+    short_name: Required[str]
     full_name: str
     cpe_vendor_name: str
     gcve_url: str

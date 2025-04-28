@@ -2,6 +2,12 @@
 
 ## Release 0.6.0 (2025-04-28)
 
+- Improved typing and added a Mypy workflow.
+- Improved documentation.
+
+
+## Release 0.6.0 (2025-04-28)
+
 - Updated GNAEntry type with new gcve_sync_api attribute.
 - Added find_gna_by_short_name function.
 - Various improvements to the cli.
