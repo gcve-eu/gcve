@@ -1,7 +1,8 @@
 # Changelog
 
-## Release 0.6.0 (2025-04-28)
+## Release 0.7.0 (2025-04-28)
 
+- Improved the definition of a GNAEntry.
 - Improved typing and added a Mypy workflow.
 - Improved documentation.
 
