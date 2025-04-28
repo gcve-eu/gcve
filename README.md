@@ -20,7 +20,7 @@ $ python -m pip install --user pipx
 $ python -m pipx ensurepath
 
 $ pipx install gcve
-  installed package gcve 0.5.0, installed using Python 3.13.0
+  installed package gcve 0.6.0, installed using Python 3.13.0
   These apps are now globally available
     - gcve
 done! ✨ 🌟 ✨
@@ -37,10 +37,12 @@ Downloaded updated https://gcve.eu/dist/gcve.json to data/gcve.json
 Integrity check passed successfully.
 ```
 
-### Searching the registry
+### Retrieving a GNA
+
+Note: This operation is case sensitive.
 
 ```bash
-$ gcve registry --find DFN-CERT
+$ gcve registry --get DFN-CERT
 {
   "id": 680,
   "short_name": "DFN-CERT",
@@ -52,20 +54,22 @@ $ gcve registry --find DFN-CERT | jq .id
 680
 ```
 
-Listing available commands:
+This operation is case insensitive.
+
+### Searching the Registry
+
+Note: Search operations are case insensitive.
 
 ```bash
-$ gcve --help
-usage: gcve [-h] {registry} ...
-
-A Python client for the Global CVE Allocation System.
-
-positional arguments:
-  {registry}
-    registry  Registry operations
-
-options:
-  -h, --help  show this help message and exit
+$ gcve registry --find cert
+[
+  {
+    "id": 680,
+    "short_name": "DFN-CERT",
+    "full_name": "DFN-CERT Services GmbH",
+    "gcve_url": "https://adv-archiv.dfn-cert.de/"
+  }
+]
 ```
 
 
