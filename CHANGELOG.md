@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.8.2 (2025-04-30)
+
+- The main gcve script is now under the root gcve module.
+
+
 ## Release 0.8.1 (2025-04-30)
 
 - Fix definition of GNAEntry for Python 3.10.
