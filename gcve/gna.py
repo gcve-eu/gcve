@@ -1,4 +1,4 @@
-from typing import List, NotRequired, Optional, TypedDict
+from typing import List, Optional, TypedDict
 
 # For Python >= 3.11
 # class GNAEntry(TypedDict, total=False):
@@ -23,13 +23,13 @@ class GNAEntry(TypedDict):
 
     id: int
     short_name: str
-    full_name: NotRequired[str]
-    cpe_vendor_name: NotRequired[str]
-    gcve_url: NotRequired[str]
-    gcve_api: NotRequired[str]
-    gcve_dump: NotRequired[str]
-    gcve_allocation: NotRequired[str]
-    gcve_sync_api: NotRequired[str]
+    full_name: str
+    cpe_vendor_name: str
+    gcve_url: str
+    gcve_api: str
+    gcve_dump: str
+    gcve_allocation: str
+    gcve_sync_api: str
 
 
 def find_gna_by_short_name(short_name: str, gna_list: List[GNAEntry]) -> List[GNAEntry]:

@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.8.1 (2025-04-30)
+
+- Fix definition of GNAEntry for Python 3.10.
+
+
 ## Release 0.8.0 (2025-04-30)
 
 - Added a --list command to display the current registry entries.
