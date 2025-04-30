@@ -33,7 +33,7 @@ Documentation = "https://gcve.eu"
 
 
 [project.scripts]
-gcve = "bin.cli:main"
+gcve = "gcve.cli:main"
 
 
 [tool.poetry]
@@ -51,15 +51,10 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"
 ]
-packages = [
-    { include = "bin" },
-    { include = "gcve" }
-]
 include = [
     "README.md",
     "COPYING",
     "CHANGELOG.md",
-    "bin/*"
 ]
 
 
