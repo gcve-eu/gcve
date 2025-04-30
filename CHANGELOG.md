@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 0.8.0 (2025-04-30)
+
+- Added a --list command to display the current registry entries.
+- Updated GNAEntry for full compatibility with Python 3.10.
+- Introduced gcve0_to_cve() function to convert GCVE-0 identifiers to CVE IDs.
+
+
 ## Release 0.7.0 (2025-04-28)
 
 - Improved the definition of a GNAEntry.
