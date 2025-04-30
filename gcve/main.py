@@ -54,6 +54,29 @@ def to_gcve_id(cve_id: str) -> str:
     return f"GCVE-0-{year}-{number}"
 
 
+def gcve0_to_cve(gcve_id: str) -> str:
+    """
+    Convert a GCVE-0 ID to a CVE ID.
+
+    Args:
+        gcve_id (str): The GCVE ID to convert.
+
+    Returns:
+        str: The corresponding CVE ID.
+
+    Raises:
+        ValueError: If the input is not a valid GCVE ID.
+    """
+    import re
+
+    match = re.fullmatch(r"GCVE-0-(\d{4})-(\d{4,})", gcve_id)
+    if not match:
+        raise ValueError(f"Invalid GCVE ID format: {gcve_id}")
+
+    year, unique_id = match.groups()
+    return f"CVE-{year}-{unique_id}"
+
+
 def gcve_generator(existing_gcves: Set[str], gna_id: int) -> Generator[str, None, None]:
     """Generate new GCVE-1-YYYY-NNNN IDs, avoiding conflicts with existing.
 
