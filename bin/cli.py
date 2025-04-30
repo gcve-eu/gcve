@@ -25,12 +25,14 @@ def handle_registry(args: Any) -> None:
             print("Integrity check passed successfully.")
         return
 
-    if args.get or args.find:
+    if args.get or args.find or args.list_registry:
         gcve_data: List[GNAEntry] = load_gcve_json()
         if args.get:
             result = get_gna_by_short_name(args.get, gcve_data)
             if result:
                 print(json.dumps(result, indent=2))
+        elif args.list_registry:
+            print(json.dumps(gcve_data, indent=2))
         elif args.find:
             results: List[GNAEntry] = find_gna_by_short_name(args.find, gcve_data)
             print(json.dumps(results, indent=2))
@@ -53,6 +55,9 @@ def main() -> None:
     registry_parser = subparsers.add_parser("registry", help="Registry operations")
     registry_parser.add_argument(
         "--pull", action="store_true", help="Pull from registry"
+    )
+    registry_parser.add_argument(
+        "--list", dest="list_registry", help="List the registry", action="store_true"
     )
     registry_parser.add_argument("--get", dest="get", help="Get by shortname")
     registry_parser.add_argument(
