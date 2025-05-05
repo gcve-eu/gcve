@@ -1,5 +1,11 @@
 # Changelog
 
+
+## Release 0.8.3 (2025-05-05)
+
+- gcve0_to_cve() is now case-insensitive.
+
+
 ## Release 0.8.2 (2025-04-30)
 
 - The main gcve script is now under the root gcve module.

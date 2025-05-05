@@ -69,7 +69,7 @@ def gcve0_to_cve(gcve_id: str) -> str:
     """
     import re
 
-    match = re.fullmatch(r"GCVE-0-(\d{4})-(\d{4,})", gcve_id)
+    match = re.fullmatch(r"GCVE-0-(\d{4})-(\d{4,})", gcve_id, re.IGNORECASE)
     if not match:
         raise ValueError(f"Invalid GCVE ID format: {gcve_id}")
 
