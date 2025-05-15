@@ -1,6 +1,13 @@
 # Changelog
 
 
+## Release 0.9.0 (2025-05-15)
+
+- Improved handling of the local GNA registry location.
+  Functions that fetch updates from the GNA directory now
+  accept a configurable base path, which can also be set via the command line.
+
+
 ## Release 0.8.3 (2025-05-05)
 
 - gcve0_to_cve() is now case-insensitive.

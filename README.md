@@ -33,10 +33,11 @@ done! ✨ 🌟 ✨
 ```bash
 $ gcve registry --pull
 Pulling from registry...
-Downloaded updated https://gcve.eu/dist/key/public.pem to data/public.pem
-Downloaded updated https://gcve.eu/dist/gcve.json.sigsha512 to data/gcve.json.sigsha512
-Downloaded updated https://gcve.eu/dist/gcve.json to data/gcve.json
+Downloaded updated https://gcve.eu/dist/key/public.pem to .gcve/registry/public.pem
+Downloaded updated https://gcve.eu/dist/gcve.json.sigsha512 to .gcve/registry/gcve.json.sigsha512
+Downloaded updated https://gcve.eu/dist/gcve.json to .gcve/registry/gcve.json
 Integrity check passed successfully.
+
 ```
 
 #### Retrieving a GNA
@@ -69,6 +70,12 @@ Note: Search operations are case insensitive.
 $ gcve registry --find cert
 [
   {
+    "id": 106,
+    "full_name": "National Cyber Security Centre SK-CERT",
+    "short_name": "SK-CERT",
+    "gcve_url": "https://www.sk-cert.sk/"
+  },
+  {
     "id": 680,
     "short_name": "DFN-CERT",
     "full_name": "DFN-CERT Services GmbH",
@@ -83,24 +90,31 @@ $ gcve registry --find cert
 #### Verifying the integrity of your local GNA directory copy
 
 ```python
-from typing import List
-from gcve.gna import GNAEntry
-from gcve.utils import (
-    download_public_key_if_changed
-    download_directory_signature_if_changed,
-    download_gcve_json_if_changed,
-    verify_gcve_integrity
-    load_gcve_json,
-)
-
-download_public_key_if_changed()
-download_directory_signature_if_changed()
-download_gcve_json_if_changed()
-
-# Verify the integrity of the directory
-if verify_gcve_integrity():
-    # Load the GCVE directory
-    gcve_data: List[GNAEntry] = load_gcve_json()
+Python 3.13.0 (main, Oct 10 2024, 07:28:38) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from typing import List
+... from gcve.gna import GNAEntry
+... from gcve.utils import (
+...     download_public_key_if_changed,
+...     download_directory_signature_if_changed,
+...     download_gcve_json_if_changed,
+...     verify_gcve_integrity,
+...     load_gcve_json,
+... )
+... 
+>>> download_public_key_if_changed()
+No changes — using cached .gcve/registry/public.pem.
+False
+>>> download_directory_signature_if_changed()
+No changes — using cached .gcve/registry/gcve.json.sigsha512.
+False
+>>> download_gcve_json_if_changed()
+No changes — using cached .gcve/registry/gcve.json.
+False
+>>> if verify_gcve_integrity():
+...     gcve_data: List[GNAEntry] = load_gcve_json()
+...     
+>>> 
 ```
 
 #### Generating new GCVE entries

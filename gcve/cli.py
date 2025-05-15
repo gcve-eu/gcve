@@ -2,6 +2,7 @@
 
 import argparse
 import json
+from pathlib import Path
 from typing import Any, List
 
 from gcve import __version__
@@ -18,15 +19,15 @@ from gcve.utils import (
 def handle_registry(args: Any) -> None:
     if args.pull:
         print("Pulling from registry...")
-        download_public_key_if_changed()
-        download_directory_signature_if_changed()
-        download_gcve_json_if_changed()
-        if verify_gcve_integrity():
+        download_public_key_if_changed(Path(args.path))
+        download_directory_signature_if_changed(Path(args.path))
+        download_gcve_json_if_changed(Path(args.path))
+        if verify_gcve_integrity(Path(args.path)):
             print("Integrity check passed successfully.")
         return
 
     if args.get or args.find or args.list_registry:
-        gcve_data: List[GNAEntry] = load_gcve_json()
+        gcve_data: List[GNAEntry] = load_gcve_json(Path(args.path))
         if args.get:
             result = get_gna_by_short_name(args.get, gcve_data)
             if result:
@@ -62,6 +63,9 @@ def main() -> None:
     registry_parser.add_argument("--get", dest="get", help="Get by shortname")
     registry_parser.add_argument(
         "--find", dest="find", help="Find in the registry by shortname"
+    )
+    registry_parser.add_argument(
+        "--path", dest="path", help="Path of the local registry.", default=".gcve"
     )
     registry_parser.set_defaults(func=handle_registry)
 

@@ -11,14 +11,15 @@ from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
 from gcve.gna import GNAEntry
 
-GCVE_PATH: Path = Path("data/gcve.json")
-SIG_PATH: Path = Path("data/gcve.json.sigsha512")
-PUBKEY_PATH: Path = Path("data/public.pem")
+BASE_PATH: Path = Path(".gcve")
+GCVE_PATH: Path = Path("registry/gcve.json")
+SIG_PATH: Path = Path("registry/gcve.json.sigsha512")
+PUBKEY_PATH: Path = Path("registry/public.pem")
 
 
-def load_gcve_json(file_path: str = "data/gcve.json") -> List[GNAEntry]:
+def load_gcve_json(base_path: Path = BASE_PATH) -> List[GNAEntry]:
     """Load the downloaded gcve.json into a Python object."""
-    with open(file_path, encoding="utf-8") as f:
+    with open(base_path / GCVE_PATH, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -39,12 +40,9 @@ def save_cached_headers(headers: dict[str, str], headers_file: str) -> None:
                 f.write(f"{key}:{headers[key]}\n")
 
 
-def download_file_if_changed(url: str, destination_path: str) -> bool:
+def download_file_if_changed(url: str, destination_path: Path) -> bool:
     """Download gcve.json only if it has changed on the server."""
-    data = Path("data")
-    data.mkdir(parents=True, exist_ok=True)
-
-    cached_headers = load_cached_headers(f"{(data / destination_path)}.headers.cache")
+    cached_headers = load_cached_headers(f"{destination_path}.headers.cache")
 
     request_headers = {}
     if "ETag" in cached_headers:
@@ -56,17 +54,19 @@ def download_file_if_changed(url: str, destination_path: str) -> bool:
         response = requests.get(url, headers=request_headers, timeout=10)
 
         if response.status_code == 304:
-            print(f"No changes — using cached {(data / destination_path).as_posix()}.")
+            print(f"No changes — using cached {destination_path.as_posix()}.")
             return False  # File unchanged
 
         response.raise_for_status()
-        with open((data / destination_path), "wb") as f:
+
+        # Ensure parent directory exists
+        destination_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(destination_path, "wb") as f:
             f.write(response.content)
 
-        save_cached_headers(
-            dict(response.headers), f"{(data / destination_path)}.headers.cache"
-        )
-        print(f"Downloaded updated {url} to {(data / destination_path).as_posix()}")
+        save_cached_headers(dict(response.headers), f"{destination_path}.headers.cache")
+        print(f"Downloaded updated {url} to {destination_path.as_posix()}")
         return True  # File was updated
 
     except requests.RequestException as e:
@@ -74,28 +74,28 @@ def download_file_if_changed(url: str, destination_path: str) -> bool:
         return False
 
 
-def download_gcve_json_if_changed() -> bool:
-    """Download gcve.json only if it has changed on the server."""
-    return download_file_if_changed("https://gcve.eu/dist/gcve.json", "gcve.json")
-
-
-def download_public_key_if_changed() -> bool:
-    """Download gcve.json only if it has changed on the server."""
-    return download_file_if_changed("https://gcve.eu/dist/key/public.pem", "public.pem")
-
-
-def download_directory_signature_if_changed() -> bool:
+def download_gcve_json_if_changed(base_path: Path = BASE_PATH) -> bool:
     """Download gcve.json only if it has changed on the server."""
     return download_file_if_changed(
-        "https://gcve.eu/dist/gcve.json.sigsha512", "gcve.json.sigsha512"
+        "https://gcve.eu/dist/gcve.json", base_path / GCVE_PATH
     )
 
 
-def verify_gcve_integrity(
-    json_path: Path = GCVE_PATH,
-    sig_path: Path = SIG_PATH,
-    pubkey_path: Path = PUBKEY_PATH,
-) -> bool:
+def download_public_key_if_changed(base_path: Path = BASE_PATH) -> bool:
+    """Download gcve.json only if it has changed on the server."""
+    return download_file_if_changed(
+        "https://gcve.eu/dist/key/public.pem", base_path / PUBKEY_PATH
+    )
+
+
+def download_directory_signature_if_changed(base_path: Path = BASE_PATH) -> bool:
+    """Download gcve.json only if it has changed on the server."""
+    return download_file_if_changed(
+        "https://gcve.eu/dist/gcve.json.sigsha512", base_path / SIG_PATH
+    )
+
+
+def verify_gcve_integrity(base_path: Path = BASE_PATH) -> bool:
     """
     Verifies the integrity of a JSON file using a SHA-512 signature and a public key.
 
@@ -109,15 +109,15 @@ def verify_gcve_integrity(
     """
     try:
         # Load the public key
-        with open(pubkey_path, "rb") as key_file:
+        with open(base_path / PUBKEY_PATH, "rb") as key_file:
             public_key = load_pem_public_key(key_file.read())
 
         # Read and decode the base64 signature
-        with open(sig_path, "rb") as sig_file:
+        with open(base_path / SIG_PATH, "rb") as sig_file:
             signature = base64.b64decode(sig_file.read())
 
         # Read the JSON file content
-        with open(json_path, "rb") as json_file:
+        with open(base_path / GCVE_PATH, "rb") as json_file:
             data = json_file.read()
 
         # Verify the signature
