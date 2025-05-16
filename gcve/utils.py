@@ -40,7 +40,7 @@ def save_cached_headers(headers: dict[str, str], headers_file: str) -> None:
                 f.write(f"{key}:{headers[key]}\n")
 
 
-def download_file_if_changed(url: str, destination_path: Path) -> bool:
+def download_file(url: str, destination_path: Path) -> bool:
     """Download gcve.json only if it has changed on the server."""
     cached_headers = load_cached_headers(f"{destination_path}.headers.cache")
 
@@ -74,23 +74,19 @@ def download_file_if_changed(url: str, destination_path: Path) -> bool:
         return False
 
 
-def download_gcve_json_if_changed(base_path: Path = BASE_PATH) -> bool:
+def download_gcve_json(base_path: Path = BASE_PATH) -> bool:
     """Download gcve.json only if it has changed on the server."""
-    return download_file_if_changed(
-        "https://gcve.eu/dist/gcve.json", base_path / GCVE_PATH
-    )
+    return download_file("https://gcve.eu/dist/gcve.json", base_path / GCVE_PATH)
 
 
-def download_public_key_if_changed(base_path: Path = BASE_PATH) -> bool:
+def download_public_key(base_path: Path = BASE_PATH) -> bool:
     """Download gcve.json only if it has changed on the server."""
-    return download_file_if_changed(
-        "https://gcve.eu/dist/key/public.pem", base_path / PUBKEY_PATH
-    )
+    return download_file("https://gcve.eu/dist/key/public.pem", base_path / PUBKEY_PATH)
 
 
-def download_directory_signature_if_changed(base_path: Path = BASE_PATH) -> bool:
+def download_directory_signature(base_path: Path = BASE_PATH) -> bool:
     """Download gcve.json only if it has changed on the server."""
-    return download_file_if_changed(
+    return download_file(
         "https://gcve.eu/dist/gcve.json.sigsha512", base_path / SIG_PATH
     )
 

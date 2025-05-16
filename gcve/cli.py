@@ -8,9 +8,9 @@ from typing import Any, List
 from gcve import __version__
 from gcve.gna import GNAEntry, find_gna_by_short_name, get_gna_by_short_name
 from gcve.utils import (
-    download_directory_signature_if_changed,
-    download_gcve_json_if_changed,
-    download_public_key_if_changed,
+    download_directory_signature,
+    download_gcve_json,
+    download_public_key,
     load_gcve_json,
     verify_gcve_integrity,
 )
@@ -19,9 +19,9 @@ from gcve.utils import (
 def handle_registry(args: Any) -> None:
     if args.pull:
         print("Pulling from registry...")
-        download_public_key_if_changed(Path(args.path))
-        download_directory_signature_if_changed(Path(args.path))
-        download_gcve_json_if_changed(Path(args.path))
+        download_public_key(Path(args.path))
+        download_directory_signature(Path(args.path))
+        download_gcve_json(Path(args.path))
         if verify_gcve_integrity(Path(args.path)):
             print("Integrity check passed successfully.")
         return

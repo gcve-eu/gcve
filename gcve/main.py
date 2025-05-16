@@ -4,9 +4,9 @@ from typing import Generator, List, Optional, Set, Tuple
 
 from gcve.gna import GNAEntry, get_gna_id_by_short_name
 from gcve.utils import (
-    download_directory_signature_if_changed,
-    download_gcve_json_if_changed,
-    download_public_key_if_changed,
+    download_directory_signature,
+    download_gcve_json,
+    download_public_key,
     load_gcve_json,
     verify_gcve_integrity,
 )
@@ -96,13 +96,13 @@ if __name__ == "__main__":
     # --- Examples of usage ---
 
     # Retrieve the public key if it has changed
-    download_public_key_if_changed()
+    download_public_key()
 
     # Retrieve the signature of the directory if it has changed
-    download_directory_signature_if_changed()
+    download_directory_signature()
 
     # Retrieve the JSON Directory file available at GCVE.eu
-    updated: bool = download_gcve_json_if_changed()
+    updated: bool = download_gcve_json()
 
     # Verify the integrity of the directory
     if integrity := verify_gcve_integrity():

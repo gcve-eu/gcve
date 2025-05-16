@@ -95,20 +95,20 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> from typing import List
 ... from gcve.gna import GNAEntry
 ... from gcve.utils import (
-...     download_public_key_if_changed,
-...     download_directory_signature_if_changed,
-...     download_gcve_json_if_changed,
+...     download_public_key,
+...     download_directory_signature,
+...     download_gcve_json,
 ...     verify_gcve_integrity,
 ...     load_gcve_json,
 ... )
 ... 
->>> download_public_key_if_changed()
+>>> download_public_key()
 No changes — using cached .gcve/registry/public.pem.
 False
->>> download_directory_signature_if_changed()
+>>> download_directory_signature()
 No changes — using cached .gcve/registry/gcve.json.sigsha512.
 False
->>> download_gcve_json_if_changed()
+>>> download_gcve_json()
 No changes — using cached .gcve/registry/gcve.json.
 False
 >>> if verify_gcve_integrity():
@@ -126,10 +126,10 @@ from typing import List
 from gcve.gna import GNAEntry
 from gcve import gcve_generator, get_gna_id_by_short_name, to_gcve_id
 from gcve.gna import GNAEntry
-from gcve.utils import download_gcve_json_if_changed, load_gcve_json
+from gcve.utils import download_gcve_json, load_gcve_json
 
 # Retrieve the JSON Directory file available at GCVE.eu if it has changed
-download_gcve_json_if_changed()
+download_gcve_json()
 # Initializes the GNA entries
 gcve_data = load_gcve_json()
 
