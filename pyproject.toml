@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "gcve"
-version = "0.10.0"
+version = "0.10.1"
 description = "A Python client for the Global CVE Allocation System."
 authors = [
     {name = "Cédric Bonhomme",email = "cedric.bonhomme@circl.lu"},

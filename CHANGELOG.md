@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.10.1 (2025-05-19)
+
+- Added py.typed file in the package.
+
+
 ## Release 0.10.0 (2025-05-19)
 
 - Refactored core part of the library.
