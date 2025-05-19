@@ -1,7 +1,12 @@
 # Changelog
 
 
-## Release 0.10.1 (2025-05-19)
+## Release 0.10.2 (2025-05-19)
+
+- Added missing py.typed file.
+
+
+- ## Release 0.10.1 (2025-05-19)
 
 - Added py.typed file in the package.
 
