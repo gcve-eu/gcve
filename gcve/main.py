@@ -3,12 +3,12 @@ from datetime import datetime, timezone
 from typing import Generator, List, Optional, Set, Tuple
 
 from gcve.gna import GNAEntry, get_gna_id_by_short_name
-from gcve.utils import (
-    download_directory_signature,
-    download_gcve_json,
-    download_public_key,
-    load_gcve_json,
-    verify_gcve_integrity,
+from gcve.registry import (
+    load_registry,
+    update_registry,
+    update_registry_public_key,
+    update_registry_signature,
+    verify_registry_integrity,
 )
 
 # from vulnerabilitylookup.vulnerabilitylookup import VulnerabilityLookup
@@ -96,18 +96,18 @@ if __name__ == "__main__":
     # --- Examples of usage ---
 
     # Retrieve the public key if it has changed
-    download_public_key()
+    update_registry_public_key()
 
     # Retrieve the signature of the directory if it has changed
-    download_directory_signature()
+    update_registry_signature()
 
     # Retrieve the JSON Directory file available at GCVE.eu
-    updated: bool = download_gcve_json()
+    updated: bool = update_registry()
 
     # Verify the integrity of the directory
-    if integrity := verify_gcve_integrity():
+    if integrity := verify_registry_integrity():
         # Load the GCVE directory
-        gcve_data: List[GNAEntry] = load_gcve_json()
+        gcve_data: List[GNAEntry] = load_registry()
     else:
         exit(1)
 

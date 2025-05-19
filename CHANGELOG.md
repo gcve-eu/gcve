@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.10.0 (2025-05-19)
+
+- Refactored core part of the library.
+
+
 ## Release 0.9.0 (2025-05-15)
 
 - Improved handling of the local GNA registry location.

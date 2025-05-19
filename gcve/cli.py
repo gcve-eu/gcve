@@ -7,27 +7,27 @@ from typing import Any, List
 
 from gcve import __version__
 from gcve.gna import GNAEntry, find_gna_by_short_name, get_gna_by_short_name
-from gcve.utils import (
-    download_directory_signature,
-    download_gcve_json,
-    download_public_key,
-    load_gcve_json,
-    verify_gcve_integrity,
+from gcve.registry import (
+    load_registry,
+    update_registry,
+    update_registry_public_key,
+    update_registry_signature,
+    verify_registry_integrity,
 )
 
 
 def handle_registry(args: Any) -> None:
     if args.pull:
-        print("Pulling from registry...")
-        download_public_key(Path(args.path))
-        download_directory_signature(Path(args.path))
-        download_gcve_json(Path(args.path))
-        if verify_gcve_integrity(Path(args.path)):
+        print("Pulling from registry…")
+        update_registry_public_key(Path(args.path))
+        update_registry_signature(Path(args.path))
+        update_registry(Path(args.path))
+        if verify_registry_integrity(Path(args.path)):
             print("Integrity check passed successfully.")
         return
 
     if args.get or args.find or args.list_registry:
-        gcve_data: List[GNAEntry] = load_gcve_json(Path(args.path))
+        gcve_data: List[GNAEntry] = load_registry(Path(args.path))
         if args.get:
             result = get_gna_by_short_name(args.get, gcve_data)
             if result:

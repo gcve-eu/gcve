@@ -22,7 +22,7 @@ $ python -m pip install --user pipx
 $ python -m pipx ensurepath
 
 $ pipx install gcve
-  installed package gcve 0.9.0, installed using Python 3.13.0
+  installed package gcve 0.10.0, installed using Python 3.13.0
   These apps are now globally available
     - gcve
 done! ✨ 🌟 ✨
@@ -32,12 +32,11 @@ done! ✨ 🌟 ✨
 
 ```bash
 $ gcve registry --pull
-Pulling from registry...
+Pulling from registry…
 Downloaded updated https://gcve.eu/dist/key/public.pem to .gcve/registry/public.pem
 Downloaded updated https://gcve.eu/dist/gcve.json.sigsha512 to .gcve/registry/gcve.json.sigsha512
 Downloaded updated https://gcve.eu/dist/gcve.json to .gcve/registry/gcve.json
 Integrity check passed successfully.
-
 ```
 
 #### Retrieving a GNA
@@ -94,25 +93,25 @@ Python 3.13.0 (main, Oct 10 2024, 07:28:38) [GCC 12.2.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> from typing import List
 ... from gcve.gna import GNAEntry
-... from gcve.utils import (
-...     download_public_key,
-...     download_directory_signature,
-...     download_gcve_json,
-...     verify_gcve_integrity,
-...     load_gcve_json,
+... from gcve.registry import (
+...     update_registry_public_key,
+...     update_registry_signature,
+...     update_registry,
+...     verify_registry_integrity,
+...     load_registry,
 ... )
 ... 
->>> download_public_key()
+>>> update_registry_public_key()
 No changes — using cached .gcve/registry/public.pem.
 False
->>> download_directory_signature()
+>>> update_registry_signature()
 No changes — using cached .gcve/registry/gcve.json.sigsha512.
 False
->>> download_gcve_json()
+>>> update_registry()
 No changes — using cached .gcve/registry/gcve.json.
 False
->>> if verify_gcve_integrity():
-...     gcve_data: List[GNAEntry] = load_gcve_json()
+>>> if verify_registry_integrity():
+...     gcve_data: List[GNAEntry] = load_registry()
 ...     
 >>> 
 ```
@@ -126,12 +125,12 @@ from typing import List
 from gcve.gna import GNAEntry
 from gcve import gcve_generator, get_gna_id_by_short_name, to_gcve_id
 from gcve.gna import GNAEntry
-from gcve.utils import download_gcve_json, load_gcve_json
+from gcve.registry import update_registry, load_registry
 
 # Retrieve the JSON Directory file available at GCVE.eu if it has changed
-download_gcve_json()
+update_registry()
 # Initializes the GNA entries
-gcve_data = load_gcve_json()
+gcve_data = load_registry()
 
 # If "CIRCL" found in the registry
 if CIRCL_GNA_ID := get_gna_id_by_short_name("CIRCL", gcve_data):
