@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.11.0 (2025-05-30)
+
+- Added a new function to get a GNA by identifier.
+
+
 ## Release 0.10.2 (2025-05-19)
 
 - Added missing py.typed file.

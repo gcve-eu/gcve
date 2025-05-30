@@ -22,7 +22,7 @@ $ python -m pip install --user pipx
 $ python -m pipx ensurepath
 
 $ pipx install gcve
-  installed package gcve 0.10.0, installed using Python 3.13.0
+  installed package gcve 0.11.0, installed using Python 3.13.0
   These apps are now globally available
     - gcve
 done! ✨ 🌟 ✨

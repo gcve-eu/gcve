@@ -41,6 +41,14 @@ def find_gna_by_short_name(short_name: str, gna_list: List[GNAEntry]) -> List[GN
     ]
 
 
+def get_gna(id: int, gna_list: List[GNAEntry]) -> Optional[GNAEntry]:
+    """Return the GNA corresponding to the identifier given in parameter."""
+    for entry in gna_list:
+        if entry.get("id") == id:
+            return entry
+    return None
+
+
 def get_gna_by_short_name(short_name: str, gna_list: List[GNAEntry]) -> GNAEntry | None:
     """Return the GNA for a given short name, or None if not found."""
     for entry in gna_list:
