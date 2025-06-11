@@ -1,6 +1,12 @@
 # Changelog
 
 
+## Release 0.11.1 (2025-06-11)
+
+- Replace default requests user-agent with official GCVE user-agent.
+- Updated dependencies.
+
+
 ## Release 0.11.0 (2025-05-30)
 
 - Added a new function to get a GNA by identifier.
