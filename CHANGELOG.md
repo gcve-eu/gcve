@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.11.2 (2025-06-11)
+
+- Fixed an issue when loading the ``__version__`` variable.
+
+
 ## Release 0.11.1 (2025-06-11)
 
 - Replace default requests user-agent with official GCVE user-agent.

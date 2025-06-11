@@ -1,9 +1,13 @@
+import importlib.metadata
 import os
 from pathlib import Path
 
 import requests  # type: ignore[import-untyped]
 
-from gcve import __version__
+try:
+    gcve_version = importlib.metadata.version("gcve")
+except Exception:
+    gcve_version = ""
 
 
 def load_cached_headers(headers_file: str) -> dict[str, str]:
@@ -29,7 +33,7 @@ def download_file(url: str, destination_path: Path) -> bool:
 
     request_headers = {}
     request_headers["User-Agent"] = (
-        f"GCVE Python Client/{__version__} (+https://github.com/gcve-eu/gcve)"
+        f"GCVE Python Client/{gcve_version} (+https://github.com/gcve-eu/gcve)"
     )
     if "ETag" in cached_headers:
         request_headers["If-None-Match"] = cached_headers["ETag"]
