@@ -3,6 +3,8 @@ from pathlib import Path
 
 import requests  # type: ignore[import-untyped]
 
+from gcve import __version__
+
 
 def load_cached_headers(headers_file: str) -> dict[str, str]:
     """Load cached headers from file."""
@@ -26,6 +28,9 @@ def download_file(url: str, destination_path: Path) -> bool:
     cached_headers = load_cached_headers(f"{destination_path}.headers.cache")
 
     request_headers = {}
+    request_headers["User-Agent"] = (
+        f"GCVE Python Client/{__version__} (+https://github.com/gcve-eu/gcve)"
+    )
     if "ETag" in cached_headers:
         request_headers["If-None-Match"] = cached_headers["ETag"]
     if "Last-Modified" in cached_headers:
