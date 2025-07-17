@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.11.3 (2025-07-17)
+
+- Updated the GNAEntry type with the new gcve_pull_api attribute.
+
+
 ## Release 0.11.2 (2025-06-11)
 
 - Fixed an issue when loading the ``__version__`` variable.

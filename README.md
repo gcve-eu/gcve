@@ -54,7 +54,7 @@ $ gcve registry --get CIRCL
   "gcve_api": "https://vulnerability.circl.lu/api/",
   "gcve_dump": "https://vulnerability.circl.lu/dumps/",
   "gcve_allocation": "https://vulnerability.circl.lu/",
-  "gcve_sync_api": "https://vulnerability.circl.lu/"
+  "gcve_pull_api": "https://vulnerability.circl.lu/"
 }
 
 $ gcve registry --get CIRCL | jq .id
