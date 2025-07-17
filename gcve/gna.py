@@ -13,7 +13,7 @@ from typing import List, Optional, TypedDict
 #     gcve_api: str
 #     gcve_dump: str
 #     gcve_allocation: str
-#     gcve_sync_api: str
+#     gcve_pull_api: str
 
 
 # For Python >= 3.10
@@ -29,7 +29,7 @@ class GNAEntry(TypedDict):
     gcve_api: str
     gcve_dump: str
     gcve_allocation: str
-    gcve_sync_api: str
+    gcve_pull_api: str
 
 
 def find_gna_by_short_name(short_name: str, gna_list: List[GNAEntry]) -> List[GNAEntry]:
