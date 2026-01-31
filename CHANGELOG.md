@@ -1,6 +1,14 @@
 # Changelog
 
 
+## Release 0.12.0 (2026-01-31)
+
+- Added new `references` subcommand to pull and list references from gcve.eu.
+- Added `load_references()` and `update_references()` functions to the library API.
+- Added CLAUDE.md documentation file for Claude Code guidance.
+- Updated README.md with examples for references functionality.
+
+
 ## Release 0.11.3 (2025-07-17)
 
 - Updated the GNAEntry type with the new gcve_pull_api attribute.
