@@ -1,7 +1,7 @@
 import base64
 import json
 from pathlib import Path
-from typing import List
+from typing import Any, Dict, List
 
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
@@ -14,6 +14,7 @@ BASE_PATH: Path = Path(".gcve")
 GCVE_PATH: Path = Path("registry/gcve.json")
 SIG_PATH: Path = Path("registry/gcve.json.sigsha512")
 PUBKEY_PATH: Path = Path("registry/public.pem")
+REFERENCES_PATH: Path = Path("references/references.json")
 
 
 def load_registry(base_path: Path = BASE_PATH) -> List[GNAEntry]:
@@ -71,3 +72,16 @@ def verify_registry_integrity(base_path: Path = BASE_PATH) -> bool:
     except Exception:
         print("Integrity check failed.")
         return False
+
+
+def load_references(base_path: Path = BASE_PATH) -> Dict[str, Any]:
+    """Load the downloaded references (references.json) into a Python object."""
+    with open(base_path / REFERENCES_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def update_references(base_path: Path = BASE_PATH) -> bool:
+    """Download references (references.json) only if it has changed on the server."""
+    return download_file(
+        "https://gcve.eu/dist/references.json", base_path / REFERENCES_PATH
+    )

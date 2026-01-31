@@ -83,6 +83,39 @@ $ gcve registry --find cert
 ]
 ```
 
+#### Pulling the references file
+
+```bash
+$ gcve references --pull
+Pulling references…
+Downloaded updated https://gcve.eu/dist/references.json to .gcve/references/references.json
+References downloaded successfully.
+```
+
+#### Listing references
+
+```bash
+$ gcve references --list
+{
+  "kev": [
+    {
+      "uuid": "405284c2-e461-4670-8979-7fd2c9755a60",
+      "short_name": "CISA KEV"
+    },
+    {
+      "uuid": "1a89b78e-f703-45f3-bb86-59eb712668bd",
+      "short_name": "CIRCL",
+      "gcve_gna_id": 1
+    },
+    {
+      "uuid": "cce329bf-df49-4c6e-a027-80be2e6483bd",
+      "short_name": "EUVD KEV",
+      "gcve_gna_id": 2
+    }
+  ]
+}
+```
+
 
 ### As a library
 
@@ -113,7 +146,20 @@ False
 >>> if verify_registry_integrity():
 ...     gcve_data: List[GNAEntry] = load_registry()
 ...     
->>> 
+>>>
+```
+
+#### Loading references
+
+```python
+>>> from gcve.registry import update_references, load_references
+>>>
+>>> update_references()
+Downloaded updated https://gcve.eu/dist/references.json to .gcve/references/references.json
+True
+>>> references = load_references()
+>>> references['kev'][0]
+{'uuid': '405284c2-e461-4670-8979-7fd2c9755a60', 'short_name': 'CISA KEV'}
 ```
 
 #### Generating new GCVE entries

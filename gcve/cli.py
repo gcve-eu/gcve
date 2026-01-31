@@ -8,7 +8,9 @@ from typing import Any, List
 from gcve import __version__
 from gcve.gna import GNAEntry, find_gna_by_short_name, get_gna_by_short_name
 from gcve.registry import (
+    load_references,
     load_registry,
+    update_references,
     update_registry,
     update_registry_public_key,
     update_registry_signature,
@@ -42,6 +44,21 @@ def handle_registry(args: Any) -> None:
     print("Registry command called without --pull")
 
 
+def handle_references(args: Any) -> None:
+    if args.pull:
+        print("Pulling references…")
+        update_references(Path(args.path))
+        print("References downloaded successfully.")
+        return
+
+    if args.list_references:
+        references_data = load_references(Path(args.path))
+        print(json.dumps(references_data, indent=2))
+        return
+
+    print("References command called without valid arguments")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="gcve", description="A Python client for the Global CVE Allocation System."
@@ -68,6 +85,24 @@ def main() -> None:
         "--path", dest="path", help="Path of the local registry.", default=".gcve"
     )
     registry_parser.set_defaults(func=handle_registry)
+
+    # Subcommand: references
+    references_parser = subparsers.add_parser(
+        "references", help="References operations"
+    )
+    references_parser.add_argument(
+        "--pull", action="store_true", help="Pull references from server"
+    )
+    references_parser.add_argument(
+        "--list",
+        dest="list_references",
+        help="List the references",
+        action="store_true",
+    )
+    references_parser.add_argument(
+        "--path", dest="path", help="Path of the local references.", default=".gcve"
+    )
+    references_parser.set_defaults(func=handle_references)
 
     args = parser.parse_args()
 
