@@ -2,7 +2,7 @@ import importlib.metadata
 import os
 from pathlib import Path
 
-import requests  # type: ignore[import-untyped]
+import requests
 
 try:
     gcve_version = importlib.metadata.version("gcve")
