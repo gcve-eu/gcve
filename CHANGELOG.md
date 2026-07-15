@@ -1,6 +1,12 @@
 # Changelog
 
 
+## Release 0.12.1 (2026-07-15)
+
+- Updated dependencies. Notably, cryptography has been upgraded
+  from 44.0.3 to 48.0.1.
+
+
 ## Release 0.12.0 (2026-01-31)
 
 - Added new `references` subcommand to pull and list references from gcve.eu.
