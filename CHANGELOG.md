@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Release 0.12.2 (2026-07-17)
+## Release 0.12.2 (2026-08-17)
 
 - Updated dependencies. Notably, cryptography has been upgraded
   from 48.0.1 to 50.0.0.
