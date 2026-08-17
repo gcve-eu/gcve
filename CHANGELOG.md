@@ -1,6 +1,16 @@
 # Changelog
 
 
+## Release 0.13.0 (2026-08-17)
+
+- Added new `cna` subcommand to pull, list, and search the CNA partners of
+  the CVE Program (https://gcve.eu/dist/cna_partners.json).
+- Added `load_cna_partners()` and `update_cna_partners()` functions to the
+  library API, along with the new `gcve.cna` module providing the
+  `CNAPartner` type and lookup helpers.
+- Updated README.md with examples for the CNA partners functionality.
+
+
 ## Release 0.12.2 (2026-08-17)
 
 - Updated dependencies. Notably, cryptography has been upgraded

@@ -117,6 +117,33 @@ $ gcve references --list
 ```
 
 
+#### Pulling the CNA partners file
+
+The list of CNA partners of the CVE Program, as published on
+[cve.org](https://www.cve.org/PartnerInformation/ListofPartners) and mirrored
+on [gcve.eu](https://gcve.eu/dist/cna_partners.json).
+
+```bash
+$ gcve cna --pull
+Pulling CNA partners…
+Downloaded updated https://gcve.eu/dist/cna_partners.json to .gcve/partners/cna_partners.json
+CNA partners downloaded successfully.
+```
+
+#### Searching the CNA partners
+
+Note: Search operations are case insensitive and match on the partner name
+and short name. ``--get`` performs a case sensitive exact match on the short name.
+
+```bash
+$ gcve cna --get CIRCL | jq .country
+"Luxembourg"
+
+$ gcve cna --find microsoft | jq '.[].partner'
+"Microsoft Corporation"
+```
+
+
 ### As a library
 
 #### Verifying the integrity of your local GNA directory copy
@@ -160,6 +187,20 @@ True
 >>> references = load_references()
 >>> references['kev'][0]
 {'uuid': '405284c2-e461-4670-8979-7fd2c9755a60', 'short_name': 'CISA KEV'}
+```
+
+#### Loading the CNA partners
+
+```python
+>>> from gcve.registry import update_cna_partners, load_cna_partners
+>>> from gcve.cna import get_cna_by_short_name
+>>>
+>>> update_cna_partners()
+Downloaded updated https://gcve.eu/dist/cna_partners.json to .gcve/partners/cna_partners.json
+True
+>>> partners = load_cna_partners()
+>>> get_cna_by_short_name("CIRCL", partners)["metadata"]["cna_id"]
+'CNA-2026-0027'
 ```
 
 #### Generating new GCVE entries

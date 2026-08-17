@@ -7,6 +7,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
+from gcve.cna import CNAPartner
 from gcve.gna import GNAEntry
 from gcve.utils import download_file
 
@@ -15,6 +16,7 @@ GCVE_PATH: Path = Path("registry/gcve.json")
 SIG_PATH: Path = Path("registry/gcve.json.sigsha512")
 PUBKEY_PATH: Path = Path("registry/public.pem")
 REFERENCES_PATH: Path = Path("references/references.json")
+CNA_PARTNERS_PATH: Path = Path("partners/cna_partners.json")
 
 
 def load_registry(base_path: Path = BASE_PATH) -> List[GNAEntry]:
@@ -84,4 +86,17 @@ def update_references(base_path: Path = BASE_PATH) -> bool:
     """Download references (references.json) only if it has changed on the server."""
     return download_file(
         "https://gcve.eu/dist/references.json", base_path / REFERENCES_PATH
+    )
+
+
+def load_cna_partners(base_path: Path = BASE_PATH) -> List[CNAPartner]:
+    """Load the downloaded CNA partners list (cna_partners.json) into a Python object."""
+    with open(base_path / CNA_PARTNERS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def update_cna_partners(base_path: Path = BASE_PATH) -> bool:
+    """Download CNA partners list (cna_partners.json) only if it has changed on the server."""
+    return download_file(
+        "https://gcve.eu/dist/cna_partners.json", base_path / CNA_PARTNERS_PATH
     )
