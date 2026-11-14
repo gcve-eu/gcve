@@ -114,6 +114,19 @@ Source: GNA-1 (CIRCL), as aggregator - https://vulnerability.circl.lu/api/vulner
 "GCVE-115-2026-00010"
 ```
 
+Use `-v` (`--verbose`) to display the resolution of the identifier and the
+requests made:
+
+```bash
+$ gcve lookup -v GCVE-1-2026-20325 > /dev/null
+Identifier: GCVE-1-2026-20325 (GNA 1, year 2026, number 20325)
+Registry: GNA-1 (CIRCL), gcve_dump=https://vulnerability.circl.lu/dumps/, gcve_pull_api=https://vulnerability.circl.lu/
+Dump: GET https://vulnerability.circl.lu/dumps/gna-1.ndjson -> not modified, using cached .gcve/dumps/gna-1.ndjson
+Dump: GCVE-1-2026-20325 is not in the dump.
+Pull API: GET https://vulnerability.circl.lu/api/gcve/publication (page 1) -> 100 record(s)
+Source: pull API of GNA-1 (CIRCL) - https://vulnerability.circl.lu/api/gcve/publication
+```
+
 #### Pulling the references file
 
 ```bash

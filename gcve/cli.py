@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import logging
 import sys
 from pathlib import Path
 from typing import Any, List
@@ -89,6 +90,8 @@ def handle_cna(args: Any) -> None:
 
 
 def handle_lookup(args: Any) -> None:
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO, format="%(message)s", stream=sys.stderr)
     base_path = Path(args.path)
     if not (base_path / GCVE_PATH).exists():
         sys.exit("No local registry found. Run 'gcve registry --pull' first.")
@@ -184,6 +187,12 @@ def main() -> None:
         metavar="GNA",
         help="Only query this GNA (identifier or short name), as aggregator, "
         "instead of the GNA which allocated the identifier.",
+    )
+    lookup_parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Display the resolution of the identifier and the requests made.",
     )
     lookup_parser.add_argument(
         "--path", dest="path", help="Path of the local registry.", default=".gcve"

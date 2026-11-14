@@ -9,6 +9,9 @@
   GNA (`gcve_dump`), then its pull API (`gcve_pull_api`), then GNA-1 which
   pulls from other GNAs. The source which answered is displayed. The
   `--via` option queries another GNA acting as aggregator.
+- Added the `-v`/`--verbose` option to the `lookup` subcommand to display
+  the resolution of the identifier and the requests made. The steps are
+  logged with the `gcve.lookup` logger when used as a library.
 - Added the new `gcve.lookup` module, with `lookup_gcve()` and
   `LookupResult` available from the library API.
 - Dumps are cached in `.gcve/dumps/` and only downloaded when they changed.
