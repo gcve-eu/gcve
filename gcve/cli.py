@@ -2,13 +2,16 @@
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any, List
 
 from gcve import __version__
 from gcve.cna import CNAPartner, find_cna_by_name, get_cna_by_short_name
 from gcve.gna import GNAEntry, find_gna_by_short_name, get_gna_by_short_name
+from gcve.lookup import lookup_gcve
 from gcve.registry import (
+    GCVE_PATH,
     load_cna_partners,
     load_references,
     load_registry,
@@ -85,6 +88,25 @@ def handle_cna(args: Any) -> None:
     print("CNA command called without valid arguments")
 
 
+def handle_lookup(args: Any) -> None:
+    base_path = Path(args.path)
+    if not (base_path / GCVE_PATH).exists():
+        sys.exit("No local registry found. Run 'gcve registry --pull' first.")
+    # The URLs used for the lookup come from the registry.
+    if not verify_registry_integrity(base_path):
+        sys.exit(1)
+
+    try:
+        result = lookup_gcve(args.gcve_id, base_path, via=args.via)
+    except (ValueError, LookupError) as e:
+        sys.exit(str(e))
+
+    if result is None:
+        sys.exit(f"{args.gcve_id} not found.")
+    print(f"Source: {result.source} - {result.url}", file=sys.stderr)
+    print(json.dumps(result.record, indent=2))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="gcve", description="A Python client for the Global CVE Allocation System."
@@ -148,6 +170,25 @@ def main() -> None:
         "--path", dest="path", help="Path of the local CNA partners.", default=".gcve"
     )
     cna_parser.set_defaults(func=handle_cna)
+
+    # Subcommand: lookup
+    lookup_parser = subparsers.add_parser(
+        "lookup", help="Look up a vulnerability by its GCVE identifier"
+    )
+    lookup_parser.add_argument(
+        "gcve_id", metavar="GCVE-ID", help="GCVE identifier, e.g. GCVE-1-2025-0001"
+    )
+    lookup_parser.add_argument(
+        "--via",
+        dest="via",
+        metavar="GNA",
+        help="Only query this GNA (identifier or short name), as aggregator, "
+        "instead of the GNA which allocated the identifier.",
+    )
+    lookup_parser.add_argument(
+        "--path", dest="path", help="Path of the local registry.", default=".gcve"
+    )
+    lookup_parser.set_defaults(func=handle_lookup)
 
     args = parser.parse_args()
 

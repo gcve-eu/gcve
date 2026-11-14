@@ -1,6 +1,24 @@
 # Changelog
 
 
+## Release 0.14.0 (2026-11-14)
+
+- Added new `lookup` subcommand to retrieve a vulnerability record by its
+  GCVE identifier (e.g. `gcve lookup GCVE-115-2026-00010`). The local
+  registry is used to find where the record is published: the dump of the
+  GNA (`gcve_dump`), then its pull API (`gcve_pull_api`), then GNA-1 which
+  pulls from other GNAs. The source which answered is displayed. The
+  `--via` option queries another GNA acting as aggregator.
+- Added the new `gcve.lookup` module, with `lookup_gcve()` and
+  `LookupResult` available from the library API.
+- Dumps are cached in `.gcve/dumps/` and only downloaded when they changed.
+- Fixed the caching of the `ETag` and `Last-Modified` headers, which were
+  ignored when the server sent them in lowercase.
+- A file removed from the local cache is now downloaded again, even if its
+  cached headers are still present.
+- Updated README.md with examples for the lookup functionality.
+
+
 ## Release 0.13.0 (2026-08-17)
 
 - Added new `cna` subcommand to pull, list, and search the CNA partners of

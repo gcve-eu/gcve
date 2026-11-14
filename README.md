@@ -83,6 +83,37 @@ $ gcve registry --find cert
 ]
 ```
 
+#### Looking up a vulnerability
+
+Look up a vulnerability record by its GCVE identifier. The local registry is
+used to find where the record is published:
+
+```bash
+$ gcve lookup GCVE-115-2026-00010
+Source: dump of GNA-115 (Adrian Dacka) - https://gna115.pages.dev/dumps/gna-115.ndjson
+{
+  "dataType": "CVE_RECORD",
+  "dataVersion": "5.1",
+  ...
+}
+```
+
+The sources are tried in this order, and the one which answered is printed on
+the standard error output:
+
+1. the dump of the GNA which allocated the identifier (`gcve_dump`), cached in `.gcve/dumps/`;
+2. the pull API of this GNA (`gcve_pull_api`);
+3. GNA-1 (CIRCL), which pulls from other GNAs.
+
+GCVE-0 identifiers (CVE) are looked up on GNA-1. Use `--via` to only query
+another GNA (identifier or short name) acting as aggregator:
+
+```bash
+$ gcve lookup GCVE-115-2026-00010 --via CIRCL | jq .cveMetadata.vulnId
+Source: GNA-1 (CIRCL), as aggregator - https://vulnerability.circl.lu/api/vulnerability/GCVE-115-2026-00010
+"GCVE-115-2026-00010"
+```
+
 #### Pulling the references file
 
 ```bash
