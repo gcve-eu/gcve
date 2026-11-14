@@ -34,3 +34,6 @@ repos:
     rev: v2.7.3
     hooks:
       -   id: pip-audit
+          # Audit the dependencies of the project (pyproject.toml), instead of
+          # the environment of the hook itself.
+          args: ["."]
