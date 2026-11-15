@@ -117,5 +117,6 @@ def print_summary(
 
 
 def print_json(record: Any, console: Optional[Console] = None) -> None:
-    """Display a record as highlighted JSON."""
-    (console or Console()).print_json(json.dumps(record))
+    """Display a record as highlighted JSON. Non-ASCII characters are escaped:
+    the record is not trusted and may carry control or bidirectional characters."""
+    (console or Console()).print_json(json.dumps(record), ensure_ascii=True)
