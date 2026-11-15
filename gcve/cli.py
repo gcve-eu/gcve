@@ -11,7 +11,7 @@ from typing import Any, List
 from gcve import __version__
 from gcve.cna import CNAPartner, find_cna_by_name, get_cna_by_short_name
 from gcve.gna import GNAEntry, find_gna_by_short_name, get_gna_by_short_name
-from gcve.lookup import lookup_gcve
+from gcve.lookup import lookup_gcve, related_ids
 from gcve.registry import (
     GCVE_PATH,
     load_cna_partners,
@@ -111,6 +111,30 @@ def handle_lookup(args: Any) -> None:
     if result is None:
         sys.exit(f"{args.gcve_id} not found.")
     print(f"Source: {result.source} - {result.url}", file=sys.stderr)
+    related = related_ids(result.record, args.gcve_id)
+    if related:
+        print(f"Related: {', '.join(related)}", file=sys.stderr)
+
+    if args.follow and related:
+        # Only one hop: the related identifiers of the record followed are
+        # displayed, not followed.
+        followed_id = related[0]
+        print(f"Following: {followed_id}", file=sys.stderr)
+        try:
+            followed = lookup_gcve(followed_id, base_path, via=args.via)
+        except (ValueError, LookupError) as e:
+            followed = None
+            print(str(e), file=sys.stderr)
+        if followed is None:
+            print(
+                f"{followed_id} not found, displaying {args.gcve_id}.", file=sys.stderr
+            )
+        else:
+            result = followed
+            print(f"Source: {result.source} - {result.url}", file=sys.stderr)
+            if related := related_ids(result.record, followed_id):
+                print(f"Related: {', '.join(related)}", file=sys.stderr)
+
     if args.pretty:
         print_pretty(result.record)
     else:
@@ -199,10 +223,12 @@ def main() -> None:
 
     # Subcommand: lookup
     lookup_parser = subparsers.add_parser(
-        "lookup", help="Look up a vulnerability by its GCVE identifier"
+        "lookup", help="Look up a vulnerability by its GCVE or CVE identifier"
     )
     lookup_parser.add_argument(
-        "gcve_id", metavar="GCVE-ID", help="GCVE identifier, e.g. GCVE-1-2025-0001"
+        "gcve_id",
+        metavar="ID",
+        help="GCVE or CVE identifier, e.g. GCVE-1-2025-0001 or CVE-2025-53700",
     )
     lookup_parser.add_argument(
         "--via",
@@ -210,6 +236,12 @@ def main() -> None:
         metavar="GNA",
         help="Only query this GNA (identifier or short name), as aggregator, "
         "instead of the GNA which allocated the identifier.",
+    )
+    lookup_parser.add_argument(
+        "--follow",
+        action="store_true",
+        help="Display the record of the related identifier instead, when the "
+        "record found refers to one (e.g. the record of the GNA for a CVE).",
     )
     lookup_parser.add_argument(
         "--pretty",

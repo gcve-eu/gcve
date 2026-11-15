@@ -12,6 +12,14 @@
 - Added the `-v`/`--verbose` option to the `lookup` subcommand to display
   the resolution of the identifier and the requests made. The steps are
   logged with the `gcve.lookup` logger when used as a library.
+- The `lookup` subcommand also accepts a CVE identifier, looked up as its
+  GCVE-0 form (e.g. `gcve lookup CVE-2025-53700`). The other identifiers
+  carried by the record found are displayed as related: the CVE of a
+  vulnerability published by a GNA, or the GCVE identifier of the GNA for
+  a CVE. They are available with `related_ids()` from the library API.
+- Added the `--follow` option to the `lookup` subcommand to display the
+  record of the related identifier instead, e.g. the record published by
+  the GNA for a CVE.
 - Added the `--pretty` option to the `lookup` subcommand to display a
   summary of the record (title, dates, severity, weaknesses, affected
   products, references, credits) instead of the JSON. It requires rich,

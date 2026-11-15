@@ -12,13 +12,14 @@ allocated the identifier, then falls back on another GNA known to pull from it:
 
 import json
 import logging
+import re
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, NamedTuple, Optional
 
 import requests
 
 from gcve.gna import GNAEntry, get_gna, get_gna_by_short_name
-from gcve.main import validate_gcve_id
+from gcve.main import GCVE_REGEX, to_gcve_id, validate_gcve_id
 from gcve.registry import BASE_PATH, load_registry
 from gcve.utils import USER_AGENT, fetch_file
 
@@ -32,6 +33,9 @@ Record = Dict[str, Any]
 
 # The steps of a lookup are logged at the INFO level.
 logger = logging.getLogger(__name__)
+
+
+CVE_REGEX = re.compile(r"CVE-\d{4}-\d{4,}")
 
 
 class LookupResult(NamedTuple):
@@ -82,6 +86,41 @@ def _matches(record: Any, gcve_id: str) -> bool:
     return isinstance(record, dict) and any(
         vuln_id.upper() == gcve_id for vuln_id in _record_ids(record)
     )
+
+
+def related_ids(record: Any, gcve_id: str) -> List[str]:
+    """Return the other identifiers (GCVE or CVE) carried by a record found for
+    an identifier. A vulnerability published by a GNA may also have a CVE, and
+    the CVE record then refers to the GCVE identifier of the GNA.
+
+    A CVE and its GCVE-0 form are the same identifier: they are not related
+    identifiers of each other."""
+    if not isinstance(record, dict):
+        return []
+    candidates = list(_record_ids(record))
+    metadata = record.get("cveMetadata")
+    if isinstance(metadata, dict) and isinstance(metadata.get("cveId"), str):
+        candidates.append(metadata["cveId"])
+
+    def canonical(identifier: str) -> str:
+        return to_gcve_id(identifier) if CVE_REGEX.fullmatch(identifier) else identifier
+
+    seen = {canonical(normalize_id(gcve_id))}
+    related: List[str] = []
+    for candidate in candidates:
+        candidate = candidate.strip().upper()
+        # The record is not trusted: only well-formed identifiers are kept.
+        if not (GCVE_REGEX.fullmatch(candidate) or CVE_REGEX.fullmatch(candidate)):
+            continue
+        if canonical(candidate) not in seen:
+            seen.add(canonical(candidate))
+            related.append(candidate)
+    return related
+
+
+def normalize_id(identifier: str) -> str:
+    """Return an identifier in upper case, without surrounding spaces."""
+    return identifier.strip().upper()
 
 
 def dump_urls(gna: GNAEntry) -> List[str]:
@@ -225,7 +264,8 @@ def resolve_gna(gna: str | int, registry: List[GNAEntry]) -> GNAEntry:
 def lookup_gcve(
     gcve_id: str, base_path: Path = BASE_PATH, via: Optional[str | int] = None
 ) -> Optional[LookupResult]:
-    """Look up a vulnerability record by its GCVE identifier.
+    """Look up a vulnerability record by its GCVE identifier. A CVE identifier
+    is also accepted: CVE-2025-53700 is looked up as GCVE-0-2025-53700.
 
     The GNA which allocated the identifier is queried first (dump, then pull
     API), then GNA-1 as aggregator. GCVE-0 identifiers (CVE) are only looked up
@@ -234,9 +274,12 @@ def lookup_gcve(
 
     Returns None if the record is not found. Raises ValueError if the identifier
     is invalid and LookupError if a GNA is not in the local registry."""
-    gcve_id = gcve_id.strip().upper()
+    gcve_id = normalize_id(gcve_id)
+    if CVE_REGEX.fullmatch(gcve_id):
+        cve_id, gcve_id = gcve_id, to_gcve_id(gcve_id)
+        logger.info("Identifier: %s is %s", cve_id, gcve_id)
     if not (parsed := validate_gcve_id(gcve_id)):
-        raise ValueError(f"Invalid GCVE ID format: {gcve_id}")
+        raise ValueError(f"Invalid GCVE or CVE ID format: {gcve_id}")
     gna_id, year, number = parsed
     logger.info(
         "Identifier: %s (GNA %d, year %d, number %d)", gcve_id, gna_id, year, number

@@ -139,9 +139,16 @@ def summarize_cve(record: Record) -> VulnerabilitySummary:
     metadata = _dict(record.get("cveMetadata"))
     cna = _dict(_dict(record.get("containers")).get("cna"))
 
+    # Some sources publish the identifiers in lower case.
     ids = _unique(
-        [_text(metadata.get("vulnId")), _text(metadata.get("cveId"))]
-        + [_text(item.get("vulnId")) for item in _dicts(cna.get("x_gcve"))]
+        [
+            identifier.upper() if identifier else None
+            for identifier in [
+                _text(metadata.get("vulnId")),
+                _text(metadata.get("cveId")),
+            ]
+            + [_text(item.get("vulnId")) for item in _dicts(cna.get("x_gcve"))]
+        ]
     )
 
     descriptions = _dicts(cna.get("descriptions"))
