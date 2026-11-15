@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Release 0.14.0 (2026-11-14)
+## Release 1.0.0 (2026-11-15)
 
 - Added new `lookup` subcommand to retrieve a vulnerability record by its
   GCVE identifier (e.g. `gcve lookup GCVE-115-2026-00010`). The local
