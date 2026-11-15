@@ -7,6 +7,7 @@ its format is detected, then an extractor dedicated to this format fills a
 extractor, registered in ``EXTRACTORS``.
 """
 
+import re
 import unicodedata
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional
@@ -16,6 +17,8 @@ Record = Dict[str, Any]
 FORMAT_CVE = "cve"
 FORMAT_OSV = "osv"  # also used for the GitHub Security Advisories (GHSA)
 FORMAT_CSAF = "csaf"
+
+CVSS_KEY_REGEX = re.compile(r"cvssV\d+_\d+")
 
 
 @dataclass
@@ -155,7 +158,8 @@ def summarize_cve(record: Record) -> VulnerabilitySummary:
     severities: List[Severity] = []
     for metric in _dicts(cna.get("metrics")):
         for key, cvss in metric.items():
-            if not key.startswith("cvssV") or not isinstance(cvss, dict):
+            # The key is not trusted either: only cvssV3_1, cvssV4_0, etc.
+            if not CVSS_KEY_REGEX.fullmatch(key) or not isinstance(cvss, dict):
                 continue
             score = cvss.get("baseScore")
             version = _text(cvss.get("version")) or key[5:].replace("_", ".")
