@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import importlib.util
 import json
 import logging
 import sys
@@ -23,6 +24,7 @@ from gcve.registry import (
     update_registry_signature,
     verify_registry_integrity,
 )
+from gcve.summary import detect_record_format, summarize_record
 
 
 def handle_registry(args: Any) -> None:
@@ -92,6 +94,8 @@ def handle_cna(args: Any) -> None:
 def handle_lookup(args: Any) -> None:
     if args.verbose:
         logging.basicConfig(level=logging.INFO, format="%(message)s", stream=sys.stderr)
+    if args.pretty and importlib.util.find_spec("rich") is None:
+        sys.exit("The --pretty option requires rich: pip install 'gcve[pretty]'")
     base_path = Path(args.path)
     if not (base_path / GCVE_PATH).exists():
         sys.exit("No local registry found. Run 'gcve registry --pull' first.")
@@ -107,7 +111,26 @@ def handle_lookup(args: Any) -> None:
     if result is None:
         sys.exit(f"{args.gcve_id} not found.")
     print(f"Source: {result.source} - {result.url}", file=sys.stderr)
-    print(json.dumps(result.record, indent=2))
+    if args.pretty:
+        print_pretty(result.record)
+    else:
+        print(json.dumps(result.record, indent=2))
+
+
+def print_pretty(record: Any) -> None:
+    """Display the summary of a record, or the record as highlighted JSON when
+    its format can not be summarized."""
+    from gcve.pretty import print_json, print_summary  # requires rich
+
+    if summary := summarize_record(record):
+        print_summary(summary)
+        return
+    record_format = detect_record_format(record) or "unknown"
+    print(
+        f"No summary available for this format ({record_format}), displaying the record.",
+        file=sys.stderr,
+    )
+    print_json(record)
 
 
 def main() -> None:
@@ -187,6 +210,12 @@ def main() -> None:
         metavar="GNA",
         help="Only query this GNA (identifier or short name), as aggregator, "
         "instead of the GNA which allocated the identifier.",
+    )
+    lookup_parser.add_argument(
+        "--pretty",
+        action="store_true",
+        help="Display a summary of the record instead of the JSON. "
+        "Requires rich: pip install 'gcve[pretty]'.",
     )
     lookup_parser.add_argument(
         "-v",

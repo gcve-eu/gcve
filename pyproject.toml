@@ -36,6 +36,11 @@ Documentation = "https://gcve.eu"
 gcve = "gcve.cli:main"
 
 
+[project.optional-dependencies]
+# Required by the --pretty option of the lookup subcommand.
+pretty = ["rich (>=15.0.0,<16.0.0)"]
+
+
 [tool.poetry]
 requires-poetry = ">=2.0"
 classifiers = [

@@ -12,6 +12,14 @@
 - Added the `-v`/`--verbose` option to the `lookup` subcommand to display
   the resolution of the identifier and the requests made. The steps are
   logged with the `gcve.lookup` logger when used as a library.
+- Added the `--pretty` option to the `lookup` subcommand to display a
+  summary of the record (title, dates, severity, weaknesses, affected
+  products, references, credits) instead of the JSON. It requires rich,
+  available with the new `pretty` extra (`pip install 'gcve[pretty]'`).
+- Added the new `gcve.summary` module, with `summarize_record()`,
+  `detect_record_format()` and `VulnerabilitySummary` available from the
+  library API. A summary is independent of the format of the record. Only
+  the CVE Record Format is summarized for now.
 - Added the new `gcve.lookup` module, with `lookup_gcve()` and
   `LookupResult` available from the library API.
 - Dumps are cached in `.gcve/dumps/` and only downloaded when they changed.

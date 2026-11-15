@@ -114,6 +114,32 @@ Source: GNA-1 (CIRCL), as aggregator - https://vulnerability.circl.lu/api/vulner
 "GCVE-115-2026-00010"
 ```
 
+Use `--pretty` to display a summary of the record instead of the JSON. This
+option requires [rich](https://github.com/Textualize/rich), installed with
+the `pretty` extra (`pipx install 'gcve[pretty]'`):
+
+```bash
+$ gcve lookup --pretty GCVE-1-2025-0001
+Source: dump of GNA-1 (CIRCL) - https://vulnerability.circl.lu/dumps/gna-1.ndjson
+╭─ GCVE-1-2025-0001 ────────────────────────────────────────────────────────────╮
+│                                                                               │
+│  Title       The absence of a password confirmation step when deactivating    │
+│              an account allows a CSRF request to potentially initiate the     │
+│              deactivation for an authenticated user.                          │
+│  State       PUBLISHED                                                        │
+│  Published   2025-05-27                                                       │
+│  Updated     2025-05-30                                                       │
+│  Severity    5.3 MEDIUM (CVSS 4.0)                                            │
+│  Weakness    CWE-352 Cross-Site Request Forgery (CSRF)                        │
+│  Affected    CIRCL Vulnerability-Lookup  <= 2.10.0                            │
+│  Credits     Devansh Chauhan (finder)                                         │
+│  ...                                                                          │
+╰───────────────────────────────────────────────────────────────────────────────╯
+```
+
+Records in the CVE Record Format are summarized. A record in another format
+is displayed as highlighted JSON.
+
 Use `-v` (`--verbose`) to display the resolution of the identifier and the
 requests made:
 
@@ -245,6 +271,19 @@ True
 >>> partners = load_cna_partners()
 >>> get_cna_by_short_name("CIRCL", partners)["metadata"]["cna_id"]
 'CNA-2026-0027'
+```
+
+#### Summarizing a vulnerability record
+
+```python
+from gcve import lookup_gcve, summarize_record
+
+if result := lookup_gcve("GCVE-1-2025-0001"):
+    # None if the format of the record is not supported
+    if summary := summarize_record(result.record):
+        print(summary.id, summary.title)
+        for severity in summary.severities:
+            print(severity.scheme, severity.score, severity.rating)
 ```
 
 #### Generating new GCVE entries
